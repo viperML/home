@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "bookworm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1636772008,
+        "narHash": "sha256-p4G8vKY/wnWpSJV0JK89R8wyZn/C6ecyrJZGkDkiDX0=",
+        "owner": "gethugothemes",
+        "repo": "bookworm-light",
+        "rev": "47981c600c2c6adde3af0742c2ab352d1464f46b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gethugothemes",
+        "repo": "bookworm-light",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1638122382,
@@ -51,6 +67,7 @@
     },
     "root": {
       "inputs": {
+        "bookworm": "bookworm",
         "flake-utils-plus": "flake-utils-plus",
         "nixpkgs": "nixpkgs"
       }

@@ -4,3 +4,6 @@ result
 *.qcow2
 source
 .envrc
+.hugo_build.lock
+_gen
+themes
