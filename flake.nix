@@ -16,21 +16,37 @@
       inherit self inputs;
 
 
-      outputsBuilder = (channels: {
-        devShell = channels.nixpkgs.mkShell {
-          name = "my-shell";
+      outputsBuilder = (channels:
+        let
+          pkgs = channels.nixpkgs;
+        in
+        {
 
-          shellHook = ''
-            mkdir -p themes
-            ln -s ${inputs.bookworm} themes/bookworm
-          '';
+          home = pkgs.stdenv.mkDerivation {
+            name = "viperML-home";
+            src = ./.;
+            buildPhase = ''
+              mkdir -p themes
+              ln -s ${inputs.bookworm} themes/bookworm
+              ${pkgs.hugo}/bin/hugo --minify
+            '';
+            installPhase = ''
+              cp -r public $out
+            '';
+          };
 
+          devShell = channels.nixpkgs.mkShell {
+            name = "my-shell";
+            shellHook = ''
+              mkdir -p themes
+              ln -s ${inputs.bookworm} themes/bookworm
+            '';
+            buildInputs = with channels.nixpkgs; [
+              hugo
+            ];
+          };
 
-          buildInputs = with channels.nixpkgs; [
-            hugo
-          ];
-        };
-      });
+        });
 
     };
 }
