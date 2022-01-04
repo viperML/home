@@ -35,13 +35,13 @@
             '';
           };
 
-          devShell = channels.nixpkgs.mkShell {
-            name = "my-shell";
+          devShell = pkgs.mkShell {
+            name = "viperML-home";
             shellHook = ''
               mkdir -p themes
               ln -s ${inputs.bookworm} themes/bookworm
             '';
-            buildInputs = with channels.nixpkgs; [
+            buildInputs = with pkgs; [
               hugo
             ];
           };
