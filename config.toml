@@ -86,7 +86,7 @@ search = true
 # main section
 mainSections = ["blog"]
 # copyright
-copyright = "Designed & Developed By [Gethugothemes](https://gethugothemes.com/)"
+# copyright = "Designed & Developed By [Gethugothemes](https://gethugothemes.com/)"
 
 # Preloader
 [params.preloader]
@@ -101,7 +101,7 @@ access_token = "IGQVJYeUk4YWNIY1h4OWZANeS1wRHZARdjJ5QmdueXN2RFR6NF9iYUtfcGp1Nmpx
 
 # Subscription
 [params.subscription]
-enable = true
+enable = false
 # mailchimp subsciption
 mailchimp_form_action = "https://gmail.us4.list-manage.com/subscribe/post?u=463ee871f45d2d93748e77cad&amp;id=a0a2c6d074" # replace this url with yours
 mailchimp_form_name = "b_463ee871f45d2d93748e77cad_a0a2c6d074" # replace this code with yours
@@ -130,10 +130,10 @@ name = "Contact"
 url = "contact/"
 weight = 4
 
-[[menu.main]]
-name = "Buy Premium"
-url = "https://gethugothemes.com/products/bookworm/"
-weight = 5
+# [[menu.main]]
+# name = "Buy Premium"
+# url = "https://gethugothemes.com/products/bookworm/"
+# weight = 5
 
 [[menu.main]]
 weight = 6
@@ -198,19 +198,19 @@ name = "Terms & Conditions"
 url = "terms-conditions/"
 weight = 4
 
-# Social Icons
-[[params.social]]
-icon = "lab la-facebook-f" # https://icons8.com/line-awesome
-url = "https://www.facebook.com/"
+# # Social Icons
+# [[params.social]]
+# icon = "lab la-facebook-f" # https://icons8.com/line-awesome
+# url = "https://www.facebook.com/"
 
-[[params.social]]
-icon = "lab la-twitter" # https://icons8.com/line-awesome
-url = "https://www.twitter.com/"
+# [[params.social]]
+# icon = "lab la-twitter" # https://icons8.com/line-awesome
+# url = "https://www.twitter.com/"
 
-[[params.social]]
-icon = "lab la-instagram" # https://icons8.com/line-awesome
-url = "https://www.instagram.com/"
+# [[params.social]]
+# icon = "lab la-instagram" # https://icons8.com/line-awesome
+# url = "https://www.instagram.com/"
 
-[[params.social]]
-icon = "lab la-linkedin-in" # https://icons8.com/line-awesome
-url = "https://www.linkedin.com/"
+# [[params.social]]
+# icon = "lab la-linkedin-in" # https://icons8.com/line-awesome
+# url = "https://www.linkedin.com/"
