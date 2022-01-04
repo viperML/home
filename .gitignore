@@ -7,3 +7,4 @@ source
 .hugo_build.lock
 _gen
 themes
+public
