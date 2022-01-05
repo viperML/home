@@ -118,9 +118,9 @@ AUTHOR WEBSITE: https://themefisher.com
 <div class=content>
 <p>In this post I want to show a brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully reproducible development environment.</p>
 <h2 id=what-can-nix-do-for-me>What can Nix do for me?</h2>
-<p>One of the features of Nix is that it is designed to allow for fully reproducible software development. Let&rsquo;s say you have a project, for which you want your coworkers, for yourself in the future or anybody else to be able to get the same results as you. There will be many variables that will be taken into account, such as the programs available in the host, the versions, configurations, etc; that will affect your results (for example, a built binary or a developing environment). Nix allows you not only to specify which package versions your project depends, but also the specific build which will be used. So, given the exact same inputs, Nix will produce identical results, be it in your machine, your coworkers or in a remote server.</p>
+<p>One of the features of Nix is that it is designed to allow for <strong>fully reproducible</strong> software development. Let&rsquo;s say you have a project, for which you want your coworkers, for yourself in the future or anybody else to be able to get the same results as you. There will be many variables that will be taken into account, such as the programs available in the host, the versions, configurations, etc; that will affect your results (for example, a built binary or a developing environment). Nix allows you not only to specify which package versions your project depends, but also the specific build which will be used. So, given the exact same inputs, Nix will produce identical results, be it in your machine, your coworkers or in a remote server.</p>
 <h2 id=so-what-is-nix-exactly>So what is Nix exactly?</h2>
-<p>Nix is a purely functional programming language, dynamically typed, with a syntax very similar to JSON. Currently, the main purpose of this language is not being general purpose, but rather being the main tool of the Nix package manager.</p>
+<p>Nix is a purely <strong>functional</strong> programming language, <strong>dynamically</strong> typed, with a syntax very similar to JSON. Currently, the main purpose of this language is not being general purpose, but rather being the main tool of the Nix package manager.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix><span style=color:#66d9ef>with</span> { a <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; b <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>; };
 {
   x <span style=color:#f92672>=</span> a <span style=color:#f92672>+</span> b
@@ -147,28 +147,28 @@ AUTHOR WEBSITE: https://themefisher.com
     license <span style=color:#f92672>=</span> licenses<span style=color:#f92672>.</span>cc-by-nc-sa-40;
     platforms <span style=color:#f92672>=</span> platforms<span style=color:#f92672>.</span>all;
   };
-</code></pre></div><p>The snippet above may be more representative of how the Nix language can be used. This snippet of code defines a derivation, the name for a package. While you could say that this package is calle &ldquo;viperML-home&rdquo; (see <code>name = </code>), the derivation will be named differently if anything in it changes.</p>
+</code></pre></div><p>This snippet of nix code may be more representative of how the Nix language can be used. It defines a derivation, which is how to build a package. While you could say that this package is called <code>viperML-home</code> (see <code>name = </code>), the derivation name will be named differently if anything changes.</p>
 <ul>
-<li><code>mkDerivation</code> is a function that creates the derivation, and takes as an argument an set of attributes, such as <code>{ foo = "bar"; }</code>.</li>
+<li><code>mkDerivation</code> is a function that creates the derivation, and takes as an argument an set of attributes, such as <code>{ foo = "bar"; foo2 = [ 1 2 ] }</code>.</li>
 <li><code>name</code>, <code>meta</code> define basic information about the package.</li>
-<li><code>buildPhase</code>, <code>installPhase</code> correspond to how Nix will build the derivation. The derivation will just be a directory in <code>/nix</code>, with path <code>$out</code>, so we can just point our installers to put the files in there, and our derivation will be built.</li>
+<li><code>buildPhase</code>, <code>installPhase</code> are <strong>bash</strong> snippets, and correspond to how Nix will build the derivation. The derivation will just be a directory in <code>/nix</code>, with path <code>$out</code>, so we can just point our installers to put the files in there, and our derivation will be built.</li>
 </ul>
-<p>Now the nix cli utilty, will be used to call this function, and install the files into <code>/nix/store/&lt;hash>-&lt;package>-&lt;version></code>. Because two packages with the same version and name can have different build or installation methods, a hash is computed and put into the name. This way, any number of &ldquo;editions&rdquo; of this package can coexist in the same system. Using one or another will be just a task of using the correct path.</p>
-<p>Now, every dependency of our package will be substituted by their exact derivation path. In the example snippet before, <code>${pkgs.hugo}/bin/hugo</code> will be substituted by <code>/nix/store/7jnn3g8871yqih4m61ggbjs1dif6hksa-hugo-0.91.2/bin/hugo</code> and this will be the same across any system that calls the expression. If the derivation for hugo changes, their hashes will be different, so my <code>viperML-home</code> will be built different, and produce a different hash in the store. So, going backwards, if we use the same inputs for our build process, Nix will make sure to produce the same exact result.</p>
+<p>Now the nix <strong>cli utilty</strong>, will be used to call this function, and install the files into <code>/nix/store/&lt;hash>-&lt;package>-&lt;version></code>. Because two packages with the same version and name can have different build or installation methods, a hash is computed and put into the name. This way, any number of &ldquo;editions&rdquo; of this package can coexist in the same system. Using one or another will be just a task of using the correct path.</p>
+<p>Now, every dependency of our package will be substituted by their exact derivation path. In the example snippet before, <code>${pkgs.hugo}/bin/hugo</code> will be substituted by <code>/nix/store/7jnn3g8871yqih4m61ggbjs1dif6hksa-hugo-0.91.2/bin/hugo</code> and this will be the same across any system that calls the expression. If the derivation for hugo changes, their hashes will be different, so my <code>viperML-home</code> will be built different, and produce a different hash in the store. So, going backwards, if we use the same inputs for our build process, Nix will make sure to produce the same exact result; and if we know a derivation, we know how it was built exactly.</p>
 <blockquote>
 <p>But how do we make sure that Nix gets always the same inputs to build the same results?</p>
 </blockquote>
-<p>When calling that previous Nix expression, it was in a context with the <code>pkgs</code> variable defined. We can define this by referencing the commit of <code>nixpkgs</code>, the git repo from which we pull or packages. This can also be done with the upcoming feature, flakes, will is discussed this post.</p>
+<p>When calling that previous Nix expression, it was in a context with the <code>pkgs</code> variable defined. We can define this by referencing the commit of <code>nixpkgs</code>, the git repo from which we pull or packages. This can also be done with the upcoming feature, <strong>flakes</strong>, will will be discussed in a future post.</p>
 <h2 id=how-do-i-start-using-nix>How do I start using Nix?</h2>
 <p>Nix can be used in Linux, macOS or Windows via WSL2. <a href=https://nixos.org/guides/install-nix.html>Link to official documentation</a>.</p>
 <p>After installing (and rebooting) your computer, you can start using Nix with:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nix-shell --packages python3
 </code></pre></div><p>This pull the python package, according to the <code>nixpkgs</code> revision configured in your channels, and put it into your path</p>
-<pre tabindex=0><code>python --version
-# Python 3.9.9
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python --version
+<span style=color:#75715e># Python 3.9.9</span>
 which python
-# /nix/store/rppr9s436950i1dlzknbmz40m2xqqnxc-python3-3.9.9/bin/python
-</code></pre>
+<span style=color:#75715e># /nix/store/rppr9s436950i1dlzknbmz40m2xqqnxc-python3-3.9.9/bin/python</span>
+</code></pre></div>
 </div>
 </div>
 </div>
