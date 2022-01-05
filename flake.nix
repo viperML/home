@@ -26,7 +26,6 @@
           pkgs = channels.nixpkgs;
         in
         {
-          defaultPackage = self.home.x86_64-linux;
 
           home = pkgs.stdenv.mkDerivation {
             name = "viperML-home";
@@ -69,6 +68,7 @@
           };
 
         });
+
 
     };
 }
