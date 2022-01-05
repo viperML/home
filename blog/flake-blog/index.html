@@ -1,7 +1,7 @@
 <!doctype html><html lang=en-us>
 <head>
 <meta charset=utf-8>
-<title>Nix</title>
+<title>Static blog with Hugo and Nix flakes</title>
 <meta name=author content="Themefisher">
 <meta name=description content="  This is meta description  ">
 <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=5">
@@ -85,62 +85,226 @@ AUTHOR WEBSITE: https://themefisher.com
 <input id=search-query name=s type=search placeholder="Type words & hit enter" class=text-center aria-label=search-query>
 </form>
 </div>
-<section class="section-sm pb-2 page-header">
-<div class=container>
-<div class=row>
-<div class="col-8 mx-auto text-center">
-<h4 class="mb-3 text-dark font-weight-bold">Showing posts from <mark>Nix</mark></h4>
-<ul class="list-inline breadcrumb-menu">
-<li class=list-inline-item><a href=/>Home</a></li>
-<li class=list-inline-item>/ &nbsp; <a href=https://ayats.org/tags>Tags</a></li>
-<li class=list-inline-item>/ &nbsp; <a href=https://ayats.org/tags/nix>Nix</a></li>
-</ul>
-</div>
-</div>
-</div>
-</section>
 <section class=section-sm>
 <div class=container>
-<div class="row no-gutters justify-content-center">
+<div class="row justify-content-center">
 <div class=col-lg-10>
-<div class=row>
-<div class=col-lg-6>
-<article class="card post-card">
-<a href=https://ayats.org/blog/flake-blog/>
+<div class="text-center mb-5">
+<h3 class="h2 mb-4 post-title">Static blog with Hugo and Nix flakes</h3>
+<ul class="card-meta list-inline">
+<li class=list-inline-item>
+<a href=#! class=card-meta-author>
+<a href=https://ayats.org/author/fernando/ class=card-meta-author>
+<img loading=lazy decoding=async src=/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_q95_h2_box_3.webp alt="Fernando Ayats" class=w-auto width=26 height=26 onerror="this.onerror='null',this.src='/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_box_3.png'">
+<span>Fernando Ayats</span>
+</a>
+</a>
+</li>
+<li class=list-inline-item>|</li>
+<li class=list-inline-item>
+<span>05 January 2022</span>
+</li>
+</ul>
+</div>
+<div class="mb-5 text-center">
 <picture>
 <source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
 <source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
 <source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
 <source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_h2_box.webp>
-<img loading=lazy decoding=async class="w-100 h-auto rounded" src=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_box.jpg alt="Static blog with Hugo and Nix flakes" width=4002 height=2998>
+<img loading=lazy decoding=async class="img-fluid rounded" src=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_box.jpg alt="Post image" width=4002 height=2998>
 </picture>
-</a>
-<div class=card-body>
-<ul class="card-meta list-inline mb-2">
-<li class="list-inline-item mb-2">
-<a href=https://ayats.org/author/fernando/ class=card-meta-author>
-<img loading=lazy decoding=async src=/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_q95_h2_box_3.webp alt="Fernando Ayats" class=w-auto width=26 height=26 onerror="this.onerror='null',this.src='/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_box_3.png'">
-<span>Fernando Ayats</span>
-</a>
-</li>
-<li class="list-inline-item mb-2">
-<span>05 Jan, 2022</span>
-</li>
-<li class="list-inline-item mb-2">
-<ul class="card-meta-tag list-inline">
+</div>
+<div class=content>
+<p>In this post, I want to show you how Nix can be used in a development environment to build this simple webpage.</p>
+<h2 id=hugo>Hugo</h2>
+<p><a href=https://gohugo.io/>Hugo</a> is a static site generator written in Go. From a users&rsquo;s perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. These written input is in form of Markdown, which is uses simple syntax to format the text, and can be edited with any text editor.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-md data-lang=md># This is a title in Markdown!
+
+<span style=color:#75715e>## and a subtitle...
+</span><span style=color:#75715e></span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non consectetur massa, quis egestas est.
+
+<span style=color:#66d9ef>-</span> This
+<span style=color:#66d9ef>-</span> is
+<span style=color:#66d9ef>-</span> a list
+
+<span style=color:#e6db74>```bash
+</span><span style=color:#e6db74></span>echo -e <span style=color:#e6db74>&#34;And this is a codes snippet\n&#34;</span>
+<span style=color:#e6db74>```</span>
+</code></pre></div><p>Hugo templates can be easily found with a quick search in Google, and usually have a specific proyect layout (where to put and format your Markdown files), and require to have the theme repo cloned in the project folder.</p>
+<p>Once your project is ready, building the site is as simple as:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo
+<span style=color:#75715e># Or to get a live reloading preview in your browser:</span>
+hugo server
+</code></pre></div><p>This will generate all the files required for the website, rendering out the details for the non web developer like me.</p>
+<h2 id=nix>Nix</h2>
+<p>Enter the Nix questions. Which version of hugo was used to build the site? What any other dependencies, like the theme, how much do we need from the user environment? Can we fully recreate the static website from another computer?</p>
+<p>If properly configured, Nix can solve these problems, by using the (experimental) feature called <strong>flakes</strong>.</p>
+<p>On a high level, the flake will provide an interface for our:</p>
+<ul>
+<li>Inputs: our source files, the template and the package dependencies (hugo)</li>
+<li>Output: the static files generated</li>
+</ul>
+<p>The basic boilerplate for a flake can be as follows:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{
+  inputs <span style=color:#f92672>=</span> {
+    nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
+    flake-utils-plus<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gytis-ivaskevicius/flake-utils-plus</span>;
+  };
+
+  outputs <span style=color:#f92672>=</span> inputs<span style=color:#f92672>@</span>{ self<span style=color:#f92672>,</span> nixpkgs<span style=color:#f92672>,</span> flake-utils-plus<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
+    flake-utils-plus<span style=color:#f92672>.</span>lib<span style=color:#f92672>.</span>mkFlake {
+      <span style=color:#66d9ef>inherit</span> self inputs;
+
+      outputsBuilder <span style=color:#f92672>=</span> (channels: {
+
+        <span style=color:#75715e># Our outputs start here</span>
+        <span style=color:#75715e># my-awesome-output = foo;</span>
+
+      });
+    };
+}
+</code></pre></div><p>The flake syntax define an attribute set <code>{ inputs = { ... }, outputs = { ... } }</code>, for which the nix command will recognize the name of the attributes. For example, in inputs, we define <code>&lt;my input name>.url = </code> to declare any number of inputs. Outputs is a functions, which defines how our outputs must be built, given the inputs that are passed in the arguments. The <a href=https://github.com/gytis-ivaskevicius/nixfiles>flake-utils-plus</a> library is an amazing piece of software that allows some abstraction and reuse of flake operations. For example, outputs are split into different systems, such as <code>x86_64-linux</code> or <code>aarch64-linux</code> (which are not the same because they use differently packages), so we would have to specify for each architecture. <code>outputsBuilder</code> automates this process for us.</p>
+<p>Finally, we can put our hugo blog as a output:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{
+  inputs <span style=color:#f92672>=</span> {
+    nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
+    flake-utils-plus<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gytis-ivaskevicius/flake-utils-plus</span>;
+
+    bookworm <span style=color:#f92672>=</span> {
+      url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gethugothemes/bookworm-light</span>;
+      flake <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span>;
+    };
+  };
+
+  outputs <span style=color:#f92672>=</span> inputs <span style=color:#f92672>@</span> { self<span style=color:#f92672>,</span> nixpkgs<span style=color:#f92672>,</span> flake-utils-plus<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
+    flake-utils-plus<span style=color:#f92672>.</span>lib<span style=color:#f92672>.</span>mkFlake {
+      <span style=color:#66d9ef>inherit</span> self inputs;
+
+      outputsBuilder <span style=color:#f92672>=</span> (channels:
+        <span style=color:#66d9ef>let</span>
+          pkgs <span style=color:#f92672>=</span> channels<span style=color:#f92672>.</span>nixpkgs;
+        <span style=color:#66d9ef>in</span> {
+
+          blog <span style=color:#f92672>=</span> pkgs<span style=color:#f92672>.</span>stdenv<span style=color:#f92672>.</span>mkDerivation {
+            name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;blog&#34;</span>;
+            src <span style=color:#f92672>=</span> <span style=color:#e6db74>./.</span>;
+            buildPhase <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
+</span><span style=color:#e6db74>              mkdir -p themes
+</span><span style=color:#e6db74>              ln -s </span><span style=color:#e6db74>${</span>inputs<span style=color:#f92672>.</span>bookworm<span style=color:#e6db74>}</span><span style=color:#e6db74> themes/bookworm
+</span><span style=color:#e6db74>              </span><span style=color:#e6db74>${</span>pkgs<span style=color:#f92672>.</span>hugo<span style=color:#e6db74>}</span><span style=color:#e6db74>/bin/hugo --minify
+</span><span style=color:#e6db74>            &#39;&#39;</span>;
+            installPhase <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
+</span><span style=color:#e6db74>              cp -r public $out
+</span><span style=color:#e6db74>            &#39;&#39;</span>;
+            meta <span style=color:#f92672>=</span> <span style=color:#66d9ef>with</span> pkgs<span style=color:#f92672>.</span>lib; {
+              description <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;My awesome webpage&#34;</span>;
+              license <span style=color:#f92672>=</span> licenses<span style=color:#f92672>.</span>cc-by-nc-sa-40;
+              platforms <span style=color:#f92672>=</span> platforms<span style=color:#f92672>.</span>all;
+            };
+          };
+
+        });
+    };
+}
+</code></pre></div><p>Our <code>blog</code> output will be a derivation. You can think of a derivation as a folder which holds any stuff, and built with Nix. In this context, <code>blog</code> will be a derivation sitting in <code>/nix/store/&lt;hash>-blog</code>, and it will contain our static website. To build it, we pass some basic information, such as <code>name</code>, <code>src</code> or <code>meta</code>, and then define the build and install phases. These are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc). The rest is specfic to this project: we have to bring the template that we defined in our <code>inputs</code>. The <code>${ }</code> syntax can be used to reference a derivation (a folder!), so calling <code>${inputs.bookworm}</code> will just return the path to the theme folder. In the same way <code>${pkgs.hugo}</code> is the folder in which the hugo binary is installed, so we just have to add the relative path to the binary.</p>
+<p>So when we call <code>nix build &lt;the path to the project>#blog</code>, what Nix will do is read the <code>flake.lock</code> file, pull the exact dependencies, and build the derivation. As the derivations ( <code>${pkgs. ...}</code> ), are always subsituted for the same value, given the same lockfile, we are guaranteed to have the same output out of this flake, without taking into account any user environment, linux version, date, etc.</p>
+<p>If you don&rsquo;t believe this, you can checkout this blog&rsquo;s repository and go to my last commit before writing this post. If all the sources are still available, you will get a exact copy of the website at this time:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/viperML/home <span style=color:#f92672>&amp;&amp;</span> cd home
+git checkout 416172a7da5129347fa95c166120a34252cc7815
+nix build .#home.x86_64-linux
+ls result
+<span style=color:#75715e># or to get a live-reloading local server</span>
+nix run .#serve
+</code></pre></div><h2 id=github-pages>GitHub pages</h2>
+<p>To finish it up, we can deploy our website for free using <a href=https://docs.github.com/en/pages>GitHub pages</a>, for which we just have to provide our static files, and github servers will do the rest, automatically. We don&rsquo;t even have to manually build the website, as we can also keep it in the github ecosystem with <a href=https://docs.github.com/en/actions/quickstart>GitHub Actions</a>, a integration tool that will build the website for us. As we saw previously, if we use nix to build the website, the output will be the same, be it on our PC or in the cloud.</p>
+</div>
+</div>
+</div>
+<div class=single-post-meta>
+<div class="row justify-content-center">
+<div class="col-lg-5 col-md-6 text-center text-md-left">
+<ul class="post-meta-tags list-unstyled list-inline">
 <li class=list-inline-item><a href=https://ayats.org/tags/nix>Nix</a></li>
 </ul>
+</div>
+<div class="col-lg-5 col-md-6 text-center text-md-right mt-4 mt-md-0">
+<ul class="social-links has-bg-color list-unstyled list-inline" style=line-height:0>
+<li class=list-inline-item>
+<a class="resp-sharing-button__link d-block" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small">
+<div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<i class="lab la-facebook-f text-dark"></i>
+</div>
+</div>
+</a>
 </li>
+<li class=list-inline-item>
+<a class="resp-sharing-button__link d-block" href="https://twitter.com/intent/tweet/?text=Static%20blog%20with%20Hugo%20and%20Nix%20flakes&url=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
+<div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<i class="lab la-twitter text-dark"></i>
+</div>
+</div>
+</a>
+</li>
+<li class=list-inline-item>
+<a class="resp-sharing-button__link d-block" href="https://plus.google.com/share?url=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<div class="resp-sharing-button resp-sharing-button--google resp-sharing-button--small">
+<div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<i class="lab la-google-plus-g text-dark"></i>
+</div>
+</div>
+</a>
+</li>
+<li class=list-inline-item>
+<a class="resp-sharing-button__link d-block" href="mailto:?subject=Static%20blog%20with%20Hugo%20and%20Nix%20flakes&body=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_self rel=noopener aria-label>
+<div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
+<div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<i class="las la-envelope text-dark"></i>
+</div>
+</div>
+</a>
+</li>
+<li class=list-inline-item>
+<a class="resp-sharing-button__link d-block" href="whatsapp://send?text=Static%20blog%20with%20Hugo%20and%20Nix%20flakes%20https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small">
+<div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+<i class="lab la-whatsapp text-dark"></i>
+</div>
+</div>
+</a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class=single-post-author>
+<div class="row justify-content-center">
+<div class=col-lg-10>
+<div class="media d-block d-sm-flex text-center text-sm-left">
+<a href=https://ayats.org/author/fernando/>
+<img loading=lazy decoding=async src=/images/author/author_huecaac65229381aab3e13256ec3657259_53621_150x150_resize_q95_h2_box_3.webp alt="Fernando Ayats" class="img-fluid rounded-circle mr-0 mr-sm-4 mb-4" width=150 height=150 onerror="this.onerror='null',this.src='/images/author/author_huecaac65229381aab3e13256ec3657259_53621_150x150_resize_box_3.png'">
+</a>
+<div class=media-body>
+<p class="font-primary mb-1">Written By</p>
+<h4><a href=https://ayats.org/author/fernando/ class="text-dark font-weight-700">Fernando Ayats</a></h4>
+<p class=font-primary>Linux enthusiast.</p>
+<ul class="social-links list-unstyled list-inline ml-0 ml-sm-n2">
 </ul>
-<h3 class=mb-3>
-<a class=post-title href=https://ayats.org/blog/flake-blog/>Static blog with Hugo and Nix flakes</a>
-</h3>
-<p>In this post, I want to show you how Nix can be used in a development environment to build this simple webpage.
-Hugo Hugo is a static site generator …</p>
 </div>
-</article>
 </div>
-<div class=col-lg-6>
+</div>
+</div>
+</div>
+<div class=single-post-similer>
+<div class="row justify-content-center">
+<div class=col-lg-10>
+<div class="row mt-3">
+<div class=col-12>
+<h3 class="text-dark font-weight-800 mb-4 pb-2">You May Also Like</h3>
+</div>
+<div class=col-md-6>
 <article class="card post-card">
 <a href=https://ayats.org/blog/nix-intro/>
 <picture>
@@ -174,6 +338,7 @@ Hugo Hugo is a static site generator …</p>
 <p>In this post I want to show a very brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully …</p>
 </div>
 </article>
+</div>
 </div>
 </div>
 </div>
