@@ -13,11 +13,11 @@ caption:
 social:
   enable: true
   social_links:
-  # - link: "https://www.facebook.com/"
-  #   icon: "lab la-facebook-f"
+  - link: "https://ayats.org"
+    icon: "las la-link"
 
-  # - link: "https://www.twitter.com/"
-  #   icon: "lab la-twitter"
+  - link: "mailto:ayatsfer@gmail.com"
+    icon: "las la-envelope"
 
   - link: "https://www.linkedin.com/in/ayatsfer/"
     icon: "lab la-linkedin-in"
@@ -43,4 +43,4 @@ social:
 #     description: "Aenean maximus urna magna elementum venenatis, quis rutrum mi semper non purus eget ipsum elementum venenatis."
 
 ---
-A student in fields of devops and airspace engineering. Had work experience developing simulation and autopilot software for Unmanned Aircraft.
+A student in fields of devops and airspace engineering. Had work experience developing simulation and autopilot software for Unmanned Aircraft. 
