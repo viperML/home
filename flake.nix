@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
     flake-utils-plus.url = github:gytis-ivaskevicius/flake-utils-plus;
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
 
     bookworm = {
       url = github:gethugothemes/bookworm-light;
