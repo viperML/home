@@ -8,7 +8,7 @@ categories: ["Linux"]
 draft: false
 ---
 
-In this post I want to show a brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully reproducible development environment.
+In this post I want to show a very brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully reproducible development environment.
 
 ## What can Nix do for me?
 
@@ -85,3 +85,10 @@ python --version
 which python
 # /nix/store/rppr9s436950i1dlzknbmz40m2xqqnxc-python3-3.9.9/bin/python
 ```
+
+## Further reading
+
+Please, also consult this posts, to learn more about Nix:
+
+- [serokell.io - What is Nix?](https://serokell.io/blog/what-is-nix) (written)
+- [Burke Libbey - Nix: What Even is it Though](https://www.youtube.com/watch?v=6iVXaqUfHi4) (video)
