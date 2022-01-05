@@ -116,7 +116,7 @@ AUTHOR WEBSITE: https://themefisher.com
 </picture>
 </div>
 <div class=content>
-<p>In this post I want to show a brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully reproducible development environment.</p>
+<p>In this post I want to show a very brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully reproducible development environment.</p>
 <h2 id=what-can-nix-do-for-me>What can Nix do for me?</h2>
 <p>One of the features of Nix is that it is designed to allow for <strong>fully reproducible</strong> software development. Let&rsquo;s say you have a project, for which you want your coworkers, for yourself in the future or anybody else to be able to get the same results as you. There will be many variables that will be taken into account, such as the programs available in the host, the versions, configurations, etc; that will affect your results (for example, a built binary or a developing environment). Nix allows you not only to specify which package versions your project depends, but also the specific build which will be used. So, given the exact same inputs, Nix will produce identical results, be it in your machine, your coworkers or in a remote server.</p>
 <h2 id=so-what-is-nix-exactly>So what is Nix exactly?</h2>
@@ -168,7 +168,12 @@ AUTHOR WEBSITE: https://themefisher.com
 <span style=color:#75715e># Python 3.9.9</span>
 which python
 <span style=color:#75715e># /nix/store/rppr9s436950i1dlzknbmz40m2xqqnxc-python3-3.9.9/bin/python</span>
-</code></pre></div>
+</code></pre></div><h2 id=further-reading>Further reading</h2>
+<p>Please, also consult this posts, to learn more about Nix:</p>
+<ul>
+<li><a href=https://serokell.io/blog/what-is-nix>serokell.io - What is Nix?</a> (written)</li>
+<li><a href="https://www.youtube.com/watch?v=6iVXaqUfHi4">Burke Libbey - Nix: What Even is it Though</a> (video)</li>
+</ul>
 </div>
 </div>
 </div>
