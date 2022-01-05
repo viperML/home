@@ -19,12 +19,14 @@
     flake-utils-plus.lib.mkFlake {
       inherit self inputs;
 
+      channelsConfig = { allowUnfree = true; };
 
       outputsBuilder = (channels:
         let
           pkgs = channels.nixpkgs;
         in
         {
+          defaultPackage = self.home.x86_64-linux;
 
           home = pkgs.stdenv.mkDerivation {
             name = "viperML-home";
@@ -37,6 +39,11 @@
             installPhase = ''
               cp -r public $out
             '';
+            meta = with pkgs.lib; {
+              description = "My awesome webpage";
+              license = licenses.cc-by-nc-sa-40;
+              platforms = platforms.all;
+            };
           };
 
           devShell = pkgs.mkShell {
