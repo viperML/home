@@ -57,6 +57,17 @@
             ];
           };
 
+          apps.serve = {
+            type = "app";
+            program = "${
+              pkgs.writeShellScriptBin "my-hugo-serve" ''
+                mkdir -p themes
+                ln -s ${inputs.bookworm} themes/bookworm
+                ${pkgs.hugo}/bin/hugo server
+              ''
+            }/bin/my-hugo-serve";
+          };
+
         });
 
     };

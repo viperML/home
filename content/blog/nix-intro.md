@@ -90,6 +90,6 @@ which python
 
 Please, also consult this posts, to learn more about Nix:
 
-- [serokell.io - What is Nix?](https://serokell.io/blog/what-is-nix) (written)
+- [Alexander Bantyev - What is Nix?](https://serokell.io/blog/what-is-nix) (written)
 - [Burke Libbey - Nix: What Even is it Though](https://www.youtube.com/watch?v=6iVXaqUfHi4) (video)
 - [Harikrishnan R - 'Why you should never ever use NixOS': a rebuttal](https://illustris.tech/devops/why-you-should-NOT-never-ever-use-nixos/) (written)
