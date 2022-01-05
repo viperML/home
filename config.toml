@@ -1,13 +1,13 @@
 ######################## default configuration ####################
 baseURL = "https://ayats.org/"
-title = "Bookworm - Personal Blog Template"
+title = "ayats.org"
 theme = "bookworm"
 # post pagination
-paginate = "5"
+paginate = "3"
 # post excerpt
 summaryLength = "20"
 # google analytics
-googleAnalytics = "" # example : UA-123-45
+googleAnalytics = "G-EX1WPV9RMV" # example : UA-123-45
 # disqus short name
 disqusShortname = "themefisher-template" # get your shortname form here : https://disqus.com
 
