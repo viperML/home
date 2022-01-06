@@ -204,4 +204,3 @@ I hope this post has been useful to demistify Nix and flakes, and to give you id
 - [Yannik Sander - Building with Nix Flakes for, eh .. reasons!](https://blog.ysndr.de/posts/internals/2021-01-01-flake-ification/)
 - [Eelco Dolstra - Nix Flakes: An introduction and tutorial](https://www.tweag.io/blog/2020-05-25-flakes/)
 - [Alexander Bantyev - Practical Nix Flakes](https://serokell.io/blog/practical-nix-flakes)
--
