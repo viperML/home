@@ -8,13 +8,13 @@ categories: ["Linux"]
 draft: false
 ---
 
-By using this blog as an example, I want to show you how you can use nix flakes for your project. Flakes are (at the time of writing) a experimental feature, but it is designed to improve the user experience. Nix expression can be pure in the sense that for the same inputs, they will produce the same outputs. However, setting this inputs can be challenging. Flakes provide a unified interface for setting these inputs, as well as providing better isolation for your project. If you don't know what Nix is, I wrote a post [here](https://ayats.org/blog/nix-intro)
+By using this blog as an example, I want to show you how you can use nix flakes for your project. Flakes are (at the time of writing) a experimental feature in nix, but it is designed to improve the user experience. Nix expressions can be pure, in the sense that the same inputs will give the same outputs. What flakes can solve is properly defining these inputs, sandboxing your build environments, as well as providing a unified interface for flake-based projects, . If you don't know what Nix is, I wrote a post [here](https://ayats.org/blog/nix-intro).
 
 ## Hugo
 
-[Hugo](https://gohugo.io/) is a static site generator written in Go. From a users's perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. The written input is in form of Markdown files, which use simple syntax to format the text, and can be edited with any text editor.
+[Hugo](https://gohugo.io/) is a static site generator written in Go. From a users's perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. The written input is in form of Markdown (`my-post.md`) files, which use simple syntax to format the text, and can be edited with any text editor.
 
-`````md
+`````markdown
 # This is a title in Markdown!
 
 ## and a subtitle...
