@@ -188,10 +188,15 @@ weight = 1
 # url = "author/"
 # weight = 2
 
+# [[menu.footer]]
+# name = "Privacy"
+# url = "privacy/"
+# weight = 3
+
 [[menu.footer]]
-name = "Privacy"
-url = "privacy/"
-weight = 3
+weight = 5
+name = "Improve"
+url = "https://github.com/viperML/home/tree/bookworm"
 
 # [[menu.footer]]
 # name = "Terms & Conditions"
@@ -214,9 +219,3 @@ url = "https://www.linkedin.com/in/ayatsfer/"
 [[params.social]]
 icon = "lab la-github"
 url = "https://www.github.com/viperML"
-
-[[menu.footer]]
-weight = 5
-#BEGIN
-name=
-#END

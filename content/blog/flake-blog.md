@@ -3,7 +3,7 @@ title: "Static blog with Hugo and Nix flakes"
 image: "images/post/daniele-buso-qzUenL35ZYw-unsplash.jpg"
 date: 2022-01-06T13:27:19Z
 author: "Fernando"
-tags: ["Nix"]
+tags: ["Nix" "Hugo" "GitHub"]
 categories: ["Linux"]
 draft: false
 ---
