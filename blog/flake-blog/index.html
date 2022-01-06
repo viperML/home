@@ -116,10 +116,10 @@ AUTHOR WEBSITE: https://themefisher.com
 </picture>
 </div>
 <div class=content>
-<p>By using this blog as an example, I want to show you how you can use nix flakes for your project. Flakes are (at the time of writing) a experimental feature, but it is designed to improve the user experience. Nix expression can be pure in the sense that for the same inputs, they will produce the same outputs. However, setting this inputs can be challenging. Flakes provide a unified interface for setting these inputs, as well as providing better isolation for your project. If you don&rsquo;t know what Nix is, I wrote a post <a href=https://ayats.org/blog/nix-intro>here</a></p>
+<p>By using this blog as an example, I want to show you how you can use nix flakes for your project. Flakes are (at the time of writing) a experimental feature in nix, but it is designed to improve the user experience. Nix expressions can be pure, in the sense that the same inputs will give the same outputs. What flakes can solve is properly defining these inputs, sandboxing your build environments, as well as providing a unified interface for flake-based projects, . If you don&rsquo;t know what Nix is, I wrote a post <a href=https://ayats.org/blog/nix-intro>here</a>.</p>
 <h2 id=hugo>Hugo</h2>
-<p><a href=https://gohugo.io/>Hugo</a> is a static site generator written in Go. From a users&rsquo;s perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. The written input is in form of Markdown files, which use simple syntax to format the text, and can be edited with any text editor.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-md data-lang=md># This is a title in Markdown!
+<p><a href=https://gohugo.io/>Hugo</a> is a static site generator written in Go. From a users&rsquo;s perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. The written input is in form of Markdown (<code>my-post.md</code>) files, which use simple syntax to format the text, and can be edited with any text editor.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown># This is a title in Markdown!
 
 <span style=color:#75715e>## and a subtitle...
 </span><span style=color:#75715e></span>
