@@ -102,7 +102,7 @@ AUTHOR WEBSITE: https://themefisher.com
 </li>
 <li class=list-inline-item>|</li>
 <li class=list-inline-item>
-<span>05 January 2022</span>
+<span>06 January 2022</span>
 </li>
 </ul>
 </div>
@@ -116,9 +116,9 @@ AUTHOR WEBSITE: https://themefisher.com
 </picture>
 </div>
 <div class=content>
-<p>In this post, I want to show you how Nix can be used in a development environment to build this simple webpage.</p>
+<p>By using this blog as an example, I want to show you how you can use nix flakes for your project. Flakes are (at the time of writing) a experimental feature, but it is designed to improve the user experience. Nix expression can be pure in the sense that for the same inputs, they will produce the same outputs. However, setting this inputs can be challenging. Flakes provide a unified interface for setting these inputs, as well as providing better isolation for your project. If you don&rsquo;t know what Nix is, I wrote a post <a href=https://ayats.org/blog/nix-intro>here</a></p>
 <h2 id=hugo>Hugo</h2>
-<p><a href=https://gohugo.io/>Hugo</a> is a static site generator written in Go. From a users&rsquo;s perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. These written input is in form of Markdown, which is uses simple syntax to format the text, and can be edited with any text editor.</p>
+<p><a href=https://gohugo.io/>Hugo</a> is a static site generator written in Go. From a users&rsquo;s perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. The written input is in form of Markdown files, which use simple syntax to format the text, and can be edited with any text editor.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-md data-lang=md># This is a title in Markdown!
 
 <span style=color:#75715e>## and a subtitle...
@@ -132,22 +132,23 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non consectetur 
 <span style=color:#e6db74>```bash
 </span><span style=color:#e6db74></span>echo -e <span style=color:#e6db74>&#34;And this is a codes snippet\n&#34;</span>
 <span style=color:#e6db74>```</span>
-</code></pre></div><p>Hugo templates can be easily found with a quick search in Google, and usually have a specific proyect layout (where to put and format your Markdown files), and require to have the theme repo cloned in the project folder.</p>
+</code></pre></div><p>Hugo templates can be easily found with a quick search in Google, and usually have a specific project layout (where to put and format your markdown files), and may require to have the theme repo cloned in the project folder.</p>
 <p>Once your project is ready, building the site is as simple as:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo
 <span style=color:#75715e># Or to get a live reloading preview in your browser:</span>
 hugo server
 </code></pre></div><p>This will generate all the files required for the website, rendering out the details for the non web developer like me.</p>
 <h2 id=nix>Nix</h2>
-<p>Enter the Nix questions. Which version of hugo was used to build the site? What any other dependencies, like the theme, how much do we need from the user environment? Can we fully recreate the static website from another computer?</p>
-<p>If properly configured, Nix can solve these problems, by using the (experimental) feature called <strong>flakes</strong>.</p>
-<p>On a high level, the flake will provide an interface for our:</p>
+<p>Enter the Nix questions. Which version of hugo was used to build the site? What any other dependencies, like the theme, how much do we need from the user environment? Can we fully recreate the static website from another computer?
+If properly configured, Nix can solve these problems, with the help of <strong>flakes</strong>.</p>
+<p>On a high level, a <code>flake.nix</code> file will provide an interface for our:</p>
 <ul>
 <li>Inputs: our source files, the template and the package dependencies (hugo)</li>
 <li>Output: the static files generated</li>
 </ul>
 <p>The basic boilerplate for a flake can be as follows:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix><span style=color:#75715e># flake.nix at project root</span>
+{
   inputs <span style=color:#f92672>=</span> {
     nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
     flake-utils-plus<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gytis-ivaskevicius/flake-utils-plus</span>;
@@ -157,38 +158,47 @@ hugo server
     flake-utils-plus<span style=color:#f92672>.</span>lib<span style=color:#f92672>.</span>mkFlake {
       <span style=color:#66d9ef>inherit</span> self inputs;
 
+      <span style=color:#75715e># Our system-independent outputs go here</span>
+      <span style=color:#75715e># E.g. NixOS configurations</span>
+
       outputsBuilder <span style=color:#f92672>=</span> (channels: {
 
-        <span style=color:#75715e># Our outputs start here</span>
-        <span style=color:#75715e># my-awesome-output = foo;</span>
+        <span style=color:#75715e># Our system-dependent outputs go here</span>
+        <span style=color:#75715e># E.g. packages, shell environments, etc</span>
 
       });
     };
 }
-</code></pre></div><p>The flake syntax define an attribute set <code>{ inputs = { ... }, outputs = { ... } }</code>, for which the nix command will recognize the name of the attributes. For example, in inputs, we define <code>&lt;my input name>.url = </code> to declare any number of inputs. Outputs is a functions, which defines how our outputs must be built, given the inputs that are passed in the arguments. The <a href=https://github.com/gytis-ivaskevicius/nixfiles>flake-utils-plus</a> library is an amazing piece of software that allows some abstraction and reuse of flake operations. For example, outputs are split into different systems, such as <code>x86_64-linux</code> or <code>aarch64-linux</code> (which are not the same because they use differently packages), so we would have to specify for each architecture. <code>outputsBuilder</code> automates this process for us.</p>
-<p>Finally, we can put our hugo blog as a output:</p>
+</code></pre></div><p>The flake syntax require you to put an attribute set <code>{ inputs = { ... }, outputs = { ... } }</code>, such that:</p>
+<ul>
+<li><code>inputs</code> will contain url&rsquo;s other flakes or non-flake resources (such as any git repo). On the first call to the flake, these inputs will be <strong>&ldquo;locked&rdquo;</strong>: nix will pull the latest or specified version and write them to a <code>flake.lock</code> (similar to lock files in node, cargo, go, etc).</li>
+<li><code>inputs.flake-utils-plus</code> is a library that provides some common functions used in flakes, that help us save some lines (<a href=https://github.com/gytis-ivaskevicius/flake-utils-plus>GitHub link</a>).</li>
+<li><code>output</code> is a function, that that can take as input the <code>inputs</code> attribute. As a result, it returns another attribute set that contains our outputs. These outputs can take many forms, but we discuss our output in the next section.</li>
+</ul>
+<p>We can set our blog output as follows:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{
   inputs <span style=color:#f92672>=</span> {
     nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
     flake-utils-plus<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gytis-ivaskevicius/flake-utils-plus</span>;
 
+    <span style=color:#75715e># Website template</span>
     bookworm <span style=color:#f92672>=</span> {
       url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gethugothemes/bookworm-light</span>;
       flake <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span>;
     };
   };
 
-  outputs <span style=color:#f92672>=</span> inputs <span style=color:#f92672>@</span> { self<span style=color:#f92672>,</span> nixpkgs<span style=color:#f92672>,</span> flake-utils-plus<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
+  outputs <span style=color:#f92672>=</span> inputs<span style=color:#f92672>@</span>{ self<span style=color:#f92672>,</span> nixpkgs<span style=color:#f92672>,</span> flake-utils-plus<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
     flake-utils-plus<span style=color:#f92672>.</span>lib<span style=color:#f92672>.</span>mkFlake {
       <span style=color:#66d9ef>inherit</span> self inputs;
 
       outputsBuilder <span style=color:#f92672>=</span> (channels:
         <span style=color:#66d9ef>let</span>
-          pkgs <span style=color:#f92672>=</span> channels<span style=color:#f92672>.</span>nixpkgs;
+          pkgs <span style=color:#f92672>=</span> channels<span style=color:#f92672>.</span>nixpkgs; <span style=color:#75715e># quicker alias</span>
         <span style=color:#66d9ef>in</span> {
 
           blog <span style=color:#f92672>=</span> pkgs<span style=color:#f92672>.</span>stdenv<span style=color:#f92672>.</span>mkDerivation {
-            name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;blog&#34;</span>;
+            name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;blog&#34;</span>; <span style=color:#75715e># our package name, irrelevant in this case</span>
             src <span style=color:#f92672>=</span> <span style=color:#e6db74>./.</span>;
             buildPhase <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
 </span><span style=color:#e6db74>              mkdir -p themes
@@ -208,17 +218,64 @@ hugo server
         });
     };
 }
-</code></pre></div><p>Our <code>blog</code> output will be a derivation. You can think of a derivation as a folder which holds any stuff, and built with Nix. In this context, <code>blog</code> will be a derivation sitting in <code>/nix/store/&lt;hash>-blog</code>, and it will contain our static website. To build it, we pass some basic information, such as <code>name</code>, <code>src</code> or <code>meta</code>, and then define the build and install phases. These are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc). The rest is specfic to this project: we have to bring the template that we defined in our <code>inputs</code>. The <code>${ }</code> syntax can be used to reference a derivation (a folder!), so calling <code>${inputs.bookworm}</code> will just return the path to the theme folder. In the same way <code>${pkgs.hugo}</code> is the folder in which the hugo binary is installed, so we just have to add the relative path to the binary.</p>
-<p>So when we call <code>nix build &lt;the path to the project>#blog</code>, what Nix will do is read the <code>flake.lock</code> file, pull the exact dependencies, and build the derivation. As the derivations ( <code>${pkgs. ...}</code> ), are always subsituted for the same value, given the same lockfile, we are guaranteed to have the same output out of this flake, without taking into account any user environment, linux version, date, etc.</p>
-<p>If you don&rsquo;t believe this, you can checkout this blog&rsquo;s repository and go to my last commit before writing this post. If all the sources are still available, you will get a exact copy of the website at this time:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/viperML/home <span style=color:#f92672>&amp;&amp;</span> cd home
+</code></pre></div><p>We build our <code>blog</code> output with the function <code>mkDerivation</code>. You can think of a derivation, as a folder which holds any stuff, and built with Nix. So, the <code>blog</code> derivation will be a folder sitting in <code>/nix/store/&lt;hash>-blog</code>, and it will contain all the contents of our static website. <code>mkDerivation</code> accepts some basic metadata, such as <code>name</code>, <code>src</code> or <code>meta</code>. The <code>xxxPhase</code> are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc) to build our package. The build process is specific to this package, but the main idea still holds: we want to put our built website into <code>$out</code> (which is the path to the derivation, substituted by Nix). To do so, we call our hugo binary. Its location is in <code>/nix/store/&lt;hash>-hugo-&lt;version>/bin/hugo</code> (according to the inputs), and this path can be called just by using <code>${pkgs.hugo}/bin/hugo</code>. In the same fashion, our template called <code>bookworm</code> is also a derivation (a folder!) sitting in the nix store, that we can call by using <code>${inputs.bookworm}</code>.</p>
+<p>Once our flake is defined, <code>nix build &lt;the path to the project>#blog</code> will read the <code>flake.nix</code>, read the <code>flake.lock</code> with the specific versions for our inputs, and begin the build process for our derivation. Nix will also put a symlink to our latest build under <code>./result</code>.</p>
+<p>If you want to try for yourself, you can checkout this blog&rsquo;s repository and go to my last commit before writing this post. If all the sources are still available, you will get a exact copy of the website at that time:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/viperML/home
+cd home
 git checkout 416172a7da5129347fa95c166120a34252cc7815
 nix build .#home.x86_64-linux
-ls result
+ls ./result <span style=color:#75715e># index.html, ...</span>
 <span style=color:#75715e># or to get a live-reloading local server</span>
 nix run .#serve
 </code></pre></div><h2 id=github-pages>GitHub pages</h2>
-<p>To finish it up, we can deploy our website for free using <a href=https://docs.github.com/en/pages>GitHub pages</a>, for which we just have to provide our static files, and github servers will do the rest, automatically. We don&rsquo;t even have to manually build the website, as we can also keep it in the github ecosystem with <a href=https://docs.github.com/en/actions/quickstart>GitHub Actions</a>, a integration tool that will build the website for us. As we saw previously, if we use nix to build the website, the output will be the same, be it on our PC or in the cloud.</p>
+<p>To deploy the website, there are many solutions, but the quickest one was to use GitHub pages for our GitHub repo. In a nutshell:</p>
+<ol>
+<li>Push the static website to a specific branch</li>
+<li>Github will host deploy it for you</li>
+<li>You can even bring your own domain name, instead of the default <code>XXX.github.io</code></li>
+</ol>
+<p>You can check out the <a href=https://docs.github.com/en/pages/quickstart>quickstart guide</a> for generic guide, but to use our nix infrastructure, we can use &ldquo;GitHub Actions&rdquo;, which will set up a virtual machine to build or project on each push.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy to GH pages</span>
+
+<span style=color:#f92672>on</span>:
+  <span style=color:#f92672>push</span>:
+    <span style=color:#f92672>branches</span>:
+      - <span style=color:#ae81ff>bookworm</span>
+
+<span style=color:#f92672>jobs</span>:
+  <span style=color:#f92672>deploy</span>:
+    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy job</span>
+    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+    <span style=color:#f92672>steps</span>:
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout</span>
+        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v2</span>
+        <span style=color:#f92672>with</span>:
+          <span style=color:#f92672>fetch-depth</span>: <span style=color:#ae81ff>0</span> <span style=color:#75715e># Nix Flakes doesn&#39;t work on shallow clones</span>
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Install nix with flakes</span>
+        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>cachix/install-nix-action@v16</span>
+        <span style=color:#f92672>with</span>:
+          <span style=color:#f92672>install_url</span>: <span style=color:#ae81ff>https://github.com/numtide/nix-unstable-installer/releases/download/nix-2.6.0pre20211228_ed3bc63/install</span>
+          <span style=color:#f92672>extra_nix_config</span>: |<span style=color:#e6db74>
+</span><span style=color:#e6db74>            </span>            <span style=color:#ae81ff>experimental-features = nix-command flakes</span>
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build static site</span>
+        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>nix build .#home.x86_64-linux</span>
+      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy to gh-pages branch</span>
+        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-gh-pages@v3</span>
+        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>github.ref == &#39;refs/heads/bookworm&#39;</span>
+        <span style=color:#f92672>with</span>:
+          <span style=color:#f92672>github_token</span>: <span style=color:#ae81ff>${{ secrets.GITHUB_TOKEN }}</span>
+          <span style=color:#f92672>publish_dir</span>: <span style=color:#ae81ff>./result</span>
+</code></pre></div><p>This GiHub action will install Nix, build the website, and copy the <code>./result</code> (symlink to the built derivation) into a new branch called <code>gh-pages</code>. From there it will be automatically deployed.</p>
+<h2 id=finale>Finale</h2>
+<p>I hope this post has been useful to demistify Nix and flakes, and to give you ideas on how to integrate it in your project.</p>
+<h2 id=further-reading>Further reading</h2>
+<ul>
+<li><a href=https://blog.ysndr.de/posts/internals/2021-01-01-flake-ification/>Yannik Sander - Building with Nix Flakes for, eh .. reasons!</a></li>
+<li><a href=https://www.tweag.io/blog/2020-05-25-flakes/>Eelco Dolstra - Nix Flakes: An introduction and tutorial</a></li>
+<li><a href=https://serokell.io/blog/practical-nix-flakes>Alexander Bantyev - Practical Nix Flakes</a></li>
+<li></li>
+</ul>
 </div>
 </div>
 </div>
