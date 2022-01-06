@@ -218,5 +218,5 @@ url = "https://www.github.com/viperML"
 [[menu.footer]]
 weight = 5
 #BEGIN
-name = ": ${COMMIT_MSG}"
+name = ": "
 #END
