@@ -7,5 +7,5 @@ SHA1=$3
 sed -i "/#BEGIN/,/#END/d" config.toml
 echo -e "#BEGIN" >> config.toml
 COMMIT_MSG="$(cat $COMMIT_MSG_FILE)"
-echo 'name = ": ${COMMIT_MSG}"' >> config.toml
+echo "name = \": ${COMMIT_MSG}\"" >> config.toml
 echo -e "#END" >> config.toml
