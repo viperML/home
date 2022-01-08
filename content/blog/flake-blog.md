@@ -85,7 +85,7 @@ The flake syntax require you to put an attribute set `{ inputs = { ... }, output
 - `inputs.flake-utils-plus` is a library that provides some common functions used in flakes, that help us save some lines of code ([GitHub link](https://github.com/gytis-ivaskevicius/flake-utils-plus)).
 - `output` is a function, that that can take as input the `inputs` attribute. As a result, it returns another attribute set that contains our outputs. These outputs can take many forms, but we discuss our output in the next section.
 
-We can set our **blog output** as follows:
+We can set our **blog's flake outputs** as follows:
 
 ```nix
 {
@@ -109,8 +109,8 @@ We can set our **blog output** as follows:
           pkgs = channels.nixpkgs; # quicker alias
         in {
 
-          blog = pkgs.stdenv.mkDerivation {
-            name = "blog"; # our package name, irrelevant in this case
+          home = pkgs.stdenv.mkDerivation {
+            name = "home"; # our package name, irrelevant in this case
             src = ./.;
             buildPhase = ''
               mkdir -p themes
@@ -132,9 +132,9 @@ We can set our **blog output** as follows:
 }
 ```
 
-We build our `blog` output with the function `mkDerivation`. You can think of a derivation, as a folder which holds any stuff, and built with Nix. So, the `blog` derivation will be a folder sitting in `/nix/store/<hash>-blog`, and it will contain all the contents of our static website. `mkDerivation` accepts some basic metadata, such as `name`, `src` or `meta`. The `xxxPhase` are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc) to build our package. The build process is specific to this package, but the main idea still holds: we want to put our built website into `$out` (which is the path to the derivation, substituted by Nix). To do so, we call our hugo binary. Its location is in `/nix/store/<hash>-hugo-<version>/bin/hugo`, and this path can be called just by using `${pkgs.hugo}/bin/hugo`. In the same fashion, our template called `bookworm` is also a derivation (a folder!) sitting in the nix store, that we can reference with `${inputs.bookworm}`.
+We build our `home` output with the function `mkDerivation`. You can think of a derivation, as a folder which holds any stuff, and built with Nix. So, the `home` derivation will be a folder sitting in `/nix/store/<hash>-home`, and it will contain all the contents of our static website. `mkDerivation` accepts some basic metadata, such as `name`, `src` or `meta`. The `xxxPhase` are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc) to build our package. The build process is specific to this package, but the main idea still holds: we want to put our built website into `$out` (which is the path to the derivation, substituted by Nix). To do so, we call our hugo binary. Its location is in `/nix/store/<hash>-hugo-<version>/bin/hugo`, and this path can be called just by using `${pkgs.hugo}/bin/hugo`. In the same fashion, our template called `bookworm` is also a derivation (a folder!) sitting in the nix store, that we can reference with `${inputs.bookworm}`.
 
-Once our flake is defined, `nix build <the path to the project>#blog.x86_64-linux` will read the `flake.nix`, read the `flake.lock` with the specific versions for our inputs, and begin the build process for our output (`...#blog`). Finally, a symlink to the derivation will be put under `./result` for our convenience.
+Once our flake is defined, `nix build <the path to the project>#home.x86_64-linux` will read the `flake.nix`, read the `flake.lock` with the specific versions for our inputs, and begin the build process for our output (`...#home`). Finally, a symlink to the derivation will be put under `./result` for our convenience.
 
 If you want to try for yourself, you can checkout this blog's repository and go to my last commit before writing this post. If all the sources are still available, you will get a exact copy of the website at that time:
 
