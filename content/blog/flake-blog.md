@@ -10,7 +10,7 @@ draft: false
 
 By using this blog as an example, I want to show you how you can use nix flakes for your project.
 
-Why a flakes? Nix expressions can be pure, in the sense that the same inputs will give the same outputs. What flakes can solve is properly defining these inputs, sandboxing your build environments, as well as providing a unified interface for flake-based projects. If you don't know what Nix is, I wrote a post [here](https://ayats.org/blog/nix-intro).
+Why flakes? Nix expressions can be pure, in the sense that the same inputs will give the same outputs. What flakes can solve is properly defining these inputs, sandboxing your build environments, as well as providing a unified interface for flake-based projects. If you don't know what Nix is, I wrote a post [here](https://ayats.org/blog/nix-intro).
 
 ## Hugo
 
