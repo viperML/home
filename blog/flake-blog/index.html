@@ -169,7 +169,7 @@ If properly configured, Nix can solve these problems, with the help of <strong>f
 <li><code>inputs.flake-utils-plus</code> is a library that provides some common functions used in flakes, that help us save some lines of code (<a href=https://github.com/gytis-ivaskevicius/flake-utils-plus>GitHub link</a>).</li>
 <li><code>output</code> is a function, that that can take as input the <code>inputs</code> attribute. As a result, it returns another attribute set that contains our outputs. These outputs can take many forms, but we discuss our output in the next section.</li>
 </ul>
-<p>We can set our <strong>blog output</strong> as follows:</p>
+<p>We can set our <strong>blog&rsquo;s flake outputs</strong> as follows:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{
   inputs <span style=color:#f92672>=</span> {
     nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
@@ -191,8 +191,8 @@ If properly configured, Nix can solve these problems, with the help of <strong>f
           pkgs <span style=color:#f92672>=</span> channels<span style=color:#f92672>.</span>nixpkgs; <span style=color:#75715e># quicker alias</span>
         <span style=color:#66d9ef>in</span> {
 
-          blog <span style=color:#f92672>=</span> pkgs<span style=color:#f92672>.</span>stdenv<span style=color:#f92672>.</span>mkDerivation {
-            name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;blog&#34;</span>; <span style=color:#75715e># our package name, irrelevant in this case</span>
+          home <span style=color:#f92672>=</span> pkgs<span style=color:#f92672>.</span>stdenv<span style=color:#f92672>.</span>mkDerivation {
+            name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;home&#34;</span>; <span style=color:#75715e># our package name, irrelevant in this case</span>
             src <span style=color:#f92672>=</span> <span style=color:#e6db74>./.</span>;
             buildPhase <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
 </span><span style=color:#e6db74>              mkdir -p themes
@@ -212,8 +212,8 @@ If properly configured, Nix can solve these problems, with the help of <strong>f
         });
     };
 }
-</code></pre></div><p>We build our <code>blog</code> output with the function <code>mkDerivation</code>. You can think of a derivation, as a folder which holds any stuff, and built with Nix. So, the <code>blog</code> derivation will be a folder sitting in <code>/nix/store/&lt;hash>-blog</code>, and it will contain all the contents of our static website. <code>mkDerivation</code> accepts some basic metadata, such as <code>name</code>, <code>src</code> or <code>meta</code>. The <code>xxxPhase</code> are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc) to build our package. The build process is specific to this package, but the main idea still holds: we want to put our built website into <code>$out</code> (which is the path to the derivation, substituted by Nix). To do so, we call our hugo binary. Its location is in <code>/nix/store/&lt;hash>-hugo-&lt;version>/bin/hugo</code>, and this path can be called just by using <code>${pkgs.hugo}/bin/hugo</code>. In the same fashion, our template called <code>bookworm</code> is also a derivation (a folder!) sitting in the nix store, that we can reference with <code>${inputs.bookworm}</code>.</p>
-<p>Once our flake is defined, <code>nix build &lt;the path to the project>#blog.x86_64-linux</code> will read the <code>flake.nix</code>, read the <code>flake.lock</code> with the specific versions for our inputs, and begin the build process for our output (<code>...#blog</code>). Finally, a symlink to the derivation will be put under <code>./result</code> for our convenience.</p>
+</code></pre></div><p>We build our <code>home</code> output with the function <code>mkDerivation</code>. You can think of a derivation, as a folder which holds any stuff, and built with Nix. So, the <code>home</code> derivation will be a folder sitting in <code>/nix/store/&lt;hash>-home</code>, and it will contain all the contents of our static website. <code>mkDerivation</code> accepts some basic metadata, such as <code>name</code>, <code>src</code> or <code>meta</code>. The <code>xxxPhase</code> are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc) to build our package. The build process is specific to this package, but the main idea still holds: we want to put our built website into <code>$out</code> (which is the path to the derivation, substituted by Nix). To do so, we call our hugo binary. Its location is in <code>/nix/store/&lt;hash>-hugo-&lt;version>/bin/hugo</code>, and this path can be called just by using <code>${pkgs.hugo}/bin/hugo</code>. In the same fashion, our template called <code>bookworm</code> is also a derivation (a folder!) sitting in the nix store, that we can reference with <code>${inputs.bookworm}</code>.</p>
+<p>Once our flake is defined, <code>nix build &lt;the path to the project>#home.x86_64-linux</code> will read the <code>flake.nix</code>, read the <code>flake.lock</code> with the specific versions for our inputs, and begin the build process for our output (<code>...#home</code>). Finally, a symlink to the derivation will be put under <code>./result</code> for our convenience.</p>
 <p>If you want to try for yourself, you can checkout this blog&rsquo;s repository and go to my last commit before writing this post. If all the sources are still available, you will get a exact copy of the website at that time:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/viperML/home
 cd home
