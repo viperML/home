@@ -97,7 +97,7 @@ AUTHOR WEBSITE: https://themefisher.com
 </li>
 <li class=list-inline-item>|</li>
 <li class=list-inline-item>
-<span>09 January 2022</span>
+<span>12 January 2022</span>
 </li>
 </ul>
 </div>
@@ -236,7 +236,7 @@ cd deploy-rs-example
   services<span style=color:#f92672>.</span>nginx<span style=color:#f92672>.</span>enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
   users<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>admin<span style=color:#f92672>.</span>extraGroups <span style=color:#f92672>=</span> [ <span style=color:#e6db74>&#34;docker&#34;</span> ];
 }
-</code></pre></div><p>And add <code>docker</code> it into our flake&rsquo;s <code>outputs.hosts.hetzner.modules</code>.</p>
+</code></pre></div><p>And add <code>docker</code> it into our <a href=https://github.com/viperML/deploy-rs-example/blob/d7b253168a59f92547997a24645c95cc0e08f439/flake.nix#L28>flake&rsquo;s <code>outputs.hosts.hetzner.modules</code></a>.</p>
 <p>You can build a VM with the configuration, to check that it is working properly:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nix build .#nixosConfigurations.hetzner.config.system.build.vm
 ./result/bin/run-hetzner-vm
