@@ -108,11 +108,11 @@ We need to set-up a base system that we can deploy on. The high-level overview i
 
 To perform the installation, we can choose any OS image, as it won't be used.
 
-{{<image src="images/post/deploy-rs-example/create-server.png" caption="This is Image Caption" alt="alter-text" command="fill" option="q95" class="img-fluid" title="image title">}}
+{{<image src="images/post/deploy-rs-example/create-server.png" caption="" alt="alter-text" command="fill" option="q95" class="img-fluid" title="Hetzner Cloud panel">}}
 
 After creating the machine, mount the NixOS install disk, reboot the machine and access the console (with the button next to power).
 
-{{<image src="images/post/deploy-rs-example/select-installer.png" caption="This is Image Caption" alt="alter-text" command="fill" option="q95" class="img-fluid" title="image title">}}
+{{<image src="images/post/deploy-rs-example/select-installer.png" caption="" alt="alter-text" command="fill" option="q95" class="img-fluid" title="Hetzner Cloud, loading NixOS">}}
 
 Our server disk will be available in `/dev/sda`. To automate the process, I created a [simple script to automate the installation](https://github.com/viperML/deploy-rs-example/blob/master/install.sh), that will partition our disk, format it, and install NixOS. If you modified `hardware-hetzner.nix` for a different partitioning, just perform the steps manually.
 
@@ -154,7 +154,7 @@ nix build .#nixosConfigurations.hetzner.config.system.build.vm
 ./result/bin/run-hetzner-vm
 ```
 
-{{<image src="images/post/deploy-rs-example/docker.png" caption="This is Image Caption" alt="alter-text" command="fill" option="q95" class="img-fluid" title="image title">}}
+{{<image src="images/post/deploy-rs-example/docker.png" caption="" alt="alter-text" command="fill" option="q95" class="img-fluid" title="VM with changes">}}
 
 
 ## Deploying the new configuration
@@ -193,9 +193,9 @@ nix develop
 deploy .#my-node.my-profile
 ```
 
-{{<image src="images/post/deploy-rs-example/deploy.png" caption="This is Image Caption" alt="alter-text" command="fill" option="q95" class="img-fluid" title="image title">}}
+{{<image src="images/post/deploy-rs-example/deploy.png" caption="" alt="alter-text" command="fill" option="q95" class="img-fluid" title="Deployment">}}
 
-{{<image src="images/post/deploy-rs-example/check.png" caption="This is Image Caption" alt="alter-text" command="fill" option="q95" class="img-fluid" title="image title">}}
+{{<image src="images/post/deploy-rs-example/check.png" caption="" alt="alter-text" command="fill" option="q95" class="img-fluid" title="Checking the deployment">}}
 
 
 ## Finale
