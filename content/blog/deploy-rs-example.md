@@ -1,5 +1,5 @@
 ---
-title: "NixOS in Hetzner Cloud with deploy-rs"
+title: "NixOS on Hetzner Cloud with deploy-rs"
 image: "images/post/christopher-burns-Wiu3w-99tNg-unsplash.jpg"
 date: 2022-01-12T14:49:55Z
 author: "Fernando"
@@ -25,7 +25,7 @@ A high level overview of the flake will be:
   - flake-utils-plus, to help with some flake-related tasks.
 - Outputs:
    - A NixOS configuration for the hostname `hetzner`
-   - A development shell that we can use to use the `deploy` binary.
+   - A development shell that we can use to use the `deploy` binary, with `$ nix develop`
 
 [`flake.nix`](https://github.com/viperML/deploy-rs-example/blob/master/flake.nix)
 ```nix
@@ -202,9 +202,9 @@ deploy .#my-node.my-profile
 
 I hope that this proccess servers you as an example of how to use deploy-rs and NixOS for your project. Some final ideas to go from here:
 
-- Fully automate the deployment process, by evaluating the flake when pushing a new commit, etc.
+- Fully automate the deployment process, by evaluating the flake when pushing a new commit, etc
 - Add different roles for different nodes
 - Use [sops-nix](https://github.com/Mic92/sops-nix) to deploy your application secrets
 - Change the partitioning scheme (maybe a simpler EXT4, or ZFS subvolumes ...)
 
-If you encounter any problem with the provided resources, feel free to open an issue at my repo [github:viperML/deploy-rs-example](https://github.com/viperML/deploy-rs-example).
+If you encounter any problem with the template, feel free to open an issue at the repo [github:viperML/deploy-rs-example](https://github.com/viperML/deploy-rs-example).
