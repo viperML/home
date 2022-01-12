@@ -1,7 +1,7 @@
 ---
 title: "NixOS in Hetzner Cloud with deploy-rs"
 image: "images/post/christopher-burns-Wiu3w-99tNg-unsplash.jpg"
-date: 2022-01-09T18:17:47Z
+date: 2022-01-12T14:49:55Z
 author: "Fernando"
 tags: ["Nix", "Cloud"]
 categories: ["Linux"]
@@ -145,7 +145,7 @@ We are ready to deploy a custom configuration into the server. For this example,
 }
 ```
 
-And add `docker` it into our flake's `outputs.hosts.hetzner.modules`.
+And add `docker` it into our [flake's `outputs.hosts.hetzner.modules`](https://github.com/viperML/deploy-rs-example/blob/d7b253168a59f92547997a24645c95cc0e08f439/flake.nix#L28).
 
 You can build a VM with the configuration, to check that it is working properly:
 
