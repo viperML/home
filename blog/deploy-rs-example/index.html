@@ -1,7 +1,7 @@
 <!doctype html><html lang=en-us>
 <head>
 <meta charset=utf-8>
-<title>NixOS in Hetzner Cloud with deploy-rs</title>
+<title>NixOS on Hetzner Cloud with deploy-rs</title>
 <meta name=author content="Fernando Ayats">
 <meta name=description content="  My personal website  ">
 <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=5">
@@ -85,7 +85,7 @@ AUTHOR WEBSITE: https://themefisher.com
 <div class="row justify-content-center">
 <div class=col-lg-10>
 <div class="text-center mb-5">
-<h3 class="h2 mb-4 post-title">NixOS in Hetzner Cloud with deploy-rs</h3>
+<h3 class="h2 mb-4 post-title">NixOS on Hetzner Cloud with deploy-rs</h3>
 <ul class="card-meta list-inline">
 <li class=list-inline-item>
 <a href=#! class=card-meta-author>
@@ -127,7 +127,7 @@ AUTHOR WEBSITE: https://themefisher.com
 <li>Outputs:
 <ul>
 <li>A NixOS configuration for the hostname <code>hetzner</code></li>
-<li>A development shell that we can use to use the <code>deploy</code> binary.</li>
+<li>A development shell that we can use to use the <code>deploy</code> binary, with <code>$ nix develop</code></li>
 </ul>
 </li>
 </ul>
@@ -283,12 +283,12 @@ deploy .#my-node.my-profile
 <h2 id=finale>Finale</h2>
 <p>I hope that this proccess servers you as an example of how to use deploy-rs and NixOS for your project. Some final ideas to go from here:</p>
 <ul>
-<li>Fully automate the deployment process, by evaluating the flake when pushing a new commit, etc.</li>
+<li>Fully automate the deployment process, by evaluating the flake when pushing a new commit, etc</li>
 <li>Add different roles for different nodes</li>
 <li>Use <a href=https://github.com/Mic92/sops-nix>sops-nix</a> to deploy your application secrets</li>
 <li>Change the partitioning scheme (maybe a simpler EXT4, or ZFS subvolumes &mldr;)</li>
 </ul>
-<p>If you encounter any problem with the provided resources, feel free to open an issue at my repo <a href=https://github.com/viperML/deploy-rs-example>github:viperML/deploy-rs-example</a>.</p>
+<p>If you encounter any problem with the template, feel free to open an issue at the repo <a href=https://github.com/viperML/deploy-rs-example>github:viperML/deploy-rs-example</a>.</p>
 </div>
 </div>
 </div>
@@ -312,7 +312,7 @@ deploy .#my-node.my-profile
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="https://twitter.com/intent/tweet/?text=NixOS%20in%20Hetzner%20Cloud%20with%20deploy-rs&url=https%3a%2f%2fayats.org%2fblog%2fdeploy-rs-example%2f" target=_blank rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="https://twitter.com/intent/tweet/?text=NixOS%20on%20Hetzner%20Cloud%20with%20deploy-rs&url=https%3a%2f%2fayats.org%2fblog%2fdeploy-rs-example%2f" target=_blank rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="lab la-twitter text-dark"></i>
@@ -330,7 +330,7 @@ deploy .#my-node.my-profile
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="mailto:?subject=NixOS%20in%20Hetzner%20Cloud%20with%20deploy-rs&body=https%3a%2f%2fayats.org%2fblog%2fdeploy-rs-example%2f" target=_self rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="mailto:?subject=NixOS%20on%20Hetzner%20Cloud%20with%20deploy-rs&body=https%3a%2f%2fayats.org%2fblog%2fdeploy-rs-example%2f" target=_self rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="las la-envelope text-dark"></i>
@@ -339,7 +339,7 @@ deploy .#my-node.my-profile
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="whatsapp://send?text=NixOS%20in%20Hetzner%20Cloud%20with%20deploy-rs%20https%3a%2f%2fayats.org%2fblog%2fdeploy-rs-example%2f" target=_blank rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="whatsapp://send?text=NixOS%20on%20Hetzner%20Cloud%20with%20deploy-rs%20https%3a%2f%2fayats.org%2fblog%2fdeploy-rs-example%2f" target=_blank rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="lab la-whatsapp text-dark"></i>
