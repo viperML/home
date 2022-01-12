@@ -211,15 +211,9 @@ users<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>ad
 <li>Install our system</li>
 </ul>
 <p>To perform the installation, we can choose any OS image, as it won&rsquo;t be used.</p>
-<figure role=group aria-describedby="caption-This is Image Caption">
-<img title="image title" loading=lazy decoding=async class="img-fluid mb-2" width=1141 height=1149 src=/images/post/deploy-rs-example/create-server_huf259211eb18f1b68c214a8bda9bc2c15_108253_1141x1149_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/create-server_huf259211eb18f1b68c214a8bda9bc2c15_108253_1141x1149_fill_q95_box_smart1_3.png'">
-<figcaption class=text-center id="caption-This is Image Caption">This is Image Caption</figcaption>
-</figure>
+<img title="Hetzner Cloud panel" loading=lazy decoding=async class=img-fluid width=1141 height=1149 src=/images/post/deploy-rs-example/create-server_huf259211eb18f1b68c214a8bda9bc2c15_108253_1141x1149_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/create-server_huf259211eb18f1b68c214a8bda9bc2c15_108253_1141x1149_fill_q95_box_smart1_3.png'">
 <p>After creating the machine, mount the NixOS install disk, reboot the machine and access the console (with the button next to power).</p>
-<figure role=group aria-describedby="caption-This is Image Caption">
-<img title="image title" loading=lazy decoding=async class="img-fluid mb-2" width=2459 height=1294 src=/images/post/deploy-rs-example/select-installer_hub29e852fe064468d36f336d6e36605a7_381941_2459x1294_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/select-installer_hub29e852fe064468d36f336d6e36605a7_381941_2459x1294_fill_q95_box_smart1_3.png'">
-<figcaption class=text-center id="caption-This is Image Caption">This is Image Caption</figcaption>
-</figure>
+<img title="Hetzner Cloud, loading NixOS" loading=lazy decoding=async class=img-fluid width=2459 height=1294 src=/images/post/deploy-rs-example/select-installer_hub29e852fe064468d36f336d6e36605a7_381941_2459x1294_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/select-installer_hub29e852fe064468d36f336d6e36605a7_381941_2459x1294_fill_q95_box_smart1_3.png'">
 <p>Our server disk will be available in <code>/dev/sda</code>. To automate the process, I created a <a href=https://github.com/viperML/deploy-rs-example/blob/master/install.sh>simple script to automate the installation</a>, that will partition our disk, format it, and install NixOS. If you modified <code>hardware-hetzner.nix</code> for a different partitioning, just perform the steps manually.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo -s
 nix-shell -p git
@@ -241,10 +235,7 @@ cd deploy-rs-example
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nix build .#nixosConfigurations.hetzner.config.system.build.vm
 ./result/bin/run-hetzner-vm
 </code></pre></div>
-<figure role=group aria-describedby="caption-This is Image Caption">
-<img title="image title" loading=lazy decoding=async class="img-fluid mb-2" width=1256 height=881 src=/images/post/deploy-rs-example/docker_hu3d6d714254a3008e6c50a78ba1859c06_113322_1256x881_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/docker_hu3d6d714254a3008e6c50a78ba1859c06_113322_1256x881_fill_q95_box_smart1_3.png'">
-<figcaption class=text-center id="caption-This is Image Caption">This is Image Caption</figcaption>
-</figure>
+<img title="VM with changes" loading=lazy decoding=async class=img-fluid width=1256 height=881 src=/images/post/deploy-rs-example/docker_hu3d6d714254a3008e6c50a78ba1859c06_113322_1256x881_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/docker_hu3d6d714254a3008e6c50a78ba1859c06_113322_1256x881_fill_q95_box_smart1_3.png'">
 <h2 id=deploying-the-new-configuration>Deploying the new configuration</h2>
 <p>Finally, all we have to do is configure deploy-rs. To do so, we have to define &ldquo;nodes&rdquo;, which in turn can have different &ldquo;profiles&rdquo;, and a profile uses a NixOS configuration.</p>
 <p>In this example, our node <code>my-node</code> will will use the profile <code>my-profile</code> which uses the <code>hetzner</code> NixOS config:</p>
@@ -272,14 +263,8 @@ outputs <span style=color:#960050;background-color:#1e0010>=</span> {
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nix develop
 deploy .#my-node.my-profile
 </code></pre></div>
-<figure role=group aria-describedby="caption-This is Image Caption">
-<img title="image title" loading=lazy decoding=async class="img-fluid mb-2" width=1234 height=1379 src=/images/post/deploy-rs-example/deploy_hub3535065437dd4af35dd3153fa4ede29_415720_1234x1379_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/deploy_hub3535065437dd4af35dd3153fa4ede29_415720_1234x1379_fill_q95_box_smart1_3.png'">
-<figcaption class=text-center id="caption-This is Image Caption">This is Image Caption</figcaption>
-</figure>
-<figure role=group aria-describedby="caption-This is Image Caption">
-<img title="image title" loading=lazy decoding=async class="img-fluid mb-2" width=771 height=516 src=/images/post/deploy-rs-example/check_hu198af296e13a1fbab9c8be7f061f2bb1_95061_771x516_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/check_hu198af296e13a1fbab9c8be7f061f2bb1_95061_771x516_fill_q95_box_smart1_3.png'">
-<figcaption class=text-center id="caption-This is Image Caption">This is Image Caption</figcaption>
-</figure>
+<img title=Deployment loading=lazy decoding=async class=img-fluid width=1234 height=1379 src=/images/post/deploy-rs-example/deploy_hub3535065437dd4af35dd3153fa4ede29_415720_1234x1379_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/deploy_hub3535065437dd4af35dd3153fa4ede29_415720_1234x1379_fill_q95_box_smart1_3.png'">
+<img title="Checking the deployment" loading=lazy decoding=async class=img-fluid width=771 height=516 src=/images/post/deploy-rs-example/check_hu198af296e13a1fbab9c8be7f061f2bb1_95061_771x516_fill_q95_h2_box_smart1_3.webp alt=alter-text onerror="this.onerror='null',this.src='/images/post/deploy-rs-example/check_hu198af296e13a1fbab9c8be7f061f2bb1_95061_771x516_fill_q95_box_smart1_3.png'">
 <h2 id=finale>Finale</h2>
 <p>I hope that this proccess servers you as an example of how to use deploy-rs and NixOS for your project. Some final ideas to go from here:</p>
 <ul>
