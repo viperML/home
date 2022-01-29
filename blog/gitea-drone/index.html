@@ -1,7 +1,7 @@
 <!doctype html><html lang=en-us>
 <head>
 <meta charset=utf-8>
-<title>Static blog with Hugo and Nix flakes</title>
+<title>Private git repository with NixOS, Gitea and Drone</title>
 <meta name=author content="Fernando Ayats">
 <meta name=description content="  My personal website  ">
 <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=5">
@@ -85,7 +85,7 @@ AUTHOR WEBSITE: https://themefisher.com
 <div class="row justify-content-center">
 <div class=col-lg-10>
 <div class="text-center mb-5">
-<h3 class="h2 mb-4 post-title">Static blog with Hugo and Nix flakes</h3>
+<h3 class="h2 mb-4 post-title">Private git repository with NixOS, Gitea and Drone</h3>
 <ul class="card-meta list-inline">
 <li class=list-inline-item>
 <a href=#! class=card-meta-author>
@@ -97,182 +97,313 @@ AUTHOR WEBSITE: https://themefisher.com
 </li>
 <li class=list-inline-item>|</li>
 <li class=list-inline-item>
-<span>06 January 2022</span>
+<span>29 January 2022</span>
 </li>
 </ul>
 </div>
 <div class="mb-5 text-center">
 <picture>
-<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
-<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
-<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
-<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_h2_box.webp>
-<img loading=lazy decoding=async class="img-fluid rounded" src=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_box.jpg alt="Post image" width=4002 height=2998>
+<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
+<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
+<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
+<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_1110x0_resize_q95_h2_box.webp>
+<img loading=lazy decoding=async class="img-fluid rounded" src=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_1110x0_resize_q95_box.jpg alt="Post image" width=5774 height=3849>
 </picture>
 </div>
 <div class=content>
-<p>By using this blog as an example, I want to show you how you can use nix flakes for your project.</p>
-<p>Why flakes? Nix expressions can be pure, in the sense that the same inputs will give the same outputs. What flakes can solve is properly defining these inputs, sandboxing your build environments, as well as providing a unified interface for flake-based projects. If you don&rsquo;t know what Nix is, I wrote a post <a href=https://ayats.org/blog/nix-intro>here</a>.</p>
-<h2 id=hugo>Hugo</h2>
-<p><a href=https://gohugo.io/>Hugo</a> is a static site generator written in Go. From a users&rsquo;s perspective, you can simply select a template and a written text with no formatting, and it will generate all the files required for the website, including all the HTML, CSS styles, JS scripts. The written input is in form of Markdown (<code>my-post.md</code>) files, which use simple syntax to format the text, and can be edited with any text editor (you can check the source for this post <a href=https://raw.githubusercontent.com/viperML/home/bookworm/content/blog/flake-blog.md>here</a>).</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown># This is a title in Markdown!
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non consectetur massa, quis egestas est.
-
-<span style=color:#66d9ef>-</span> This
-<span style=color:#66d9ef>-</span> is
-<span style=color:#66d9ef>-</span> a list
-
-<span style=color:#e6db74>```bash
-</span><span style=color:#e6db74></span>echo -e <span style=color:#e6db74>&#34;And this is a codes snippet\n&#34;</span>
-<span style=color:#e6db74>```</span>
-</code></pre></div><p>Hugo templates usually consist of one repository, which must be cloned into a subdirectory into your project, and then selected in your Hugo config file (<code>config.toml</code>). Some templates may also require you to copy a basic site example, to get a basis to start with. The template used for this blog at the time of the writing was <a href=https://github.com/gethugothemes/bookworm-light>Bookworm Light</a>, and I found it through this gallery: <a href="https://jamstackthemes.dev/#ssg=hugo">Jamstack Themes</a>.</p>
-<p>Once your project is ready, building the site is as simple as:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hugo
-<span style=color:#75715e># Or to get a live reloading preview in your browser:</span>
-hugo server
-</code></pre></div><p>This will generate all the files required for the website, rendering out the details for the non-web developer like me.</p>
-<h2 id=nix>Nix</h2>
-<p>Enter the Nix questions. Which version of hugo was used to build the site? What any other dependencies, like the theme, how much do we need from the user environment? Can we fully recreate the static website from another computer?
-If properly configured, Nix can solve these problems, with the help of <strong>flakes</strong>.</p>
-<p>On a high level, a <code>flake.nix</code> file will provide an interface for our:</p>
+<p>In this post I want to show you how I set up a NixOS server running a private Gitea instance, with CI pipelines using Drone, all tied together with Nginx, PostgreSQL and sops-nix. With this setup you would have:</p>
 <ul>
-<li>Inputs: our source files, the template and the package dependencies (hugo)</li>
-<li>Output: the static files generated</li>
+<li>A private Git repository to upload your projects, with a nice web interface.</li>
+<li>CI/CD pipelines, with a similiar behaviour to GitHub&rsquo;s or Gitlab&rsquo;s.</li>
 </ul>
-<p>The basic boilerplate for a flake can be as follows:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix><span style=color:#75715e># flake.nix at project root</span>
+<p>This guide is also oriented at a hobbist setup, where the approach is to keep the configuration as simple as posible.</p>
+<h2 id=server>Server</h2>
+<p>This guide assumes that you already have a machine to deploy your NixOS configurations to, and that you have a working minimial configuration. To do so, there are some NixOS-native projects that can help you, such as:</p>
+<ul>
+<li><a href=https://github.com/NixOS/nixops>NixOps</a></li>
+<li><a href=https://github.com/serokell/deploy-rs>deploy-rs</a> (check out my guide <a href=https://ayats.org/blog/deploy-rs-example/>here</a>)</li>
+</ul>
+<p>Whichever solution you use, you can adapt and drop this configuration files, and then import them from your main <code>configuration.nix</code>.</p>
+<h2 id=sops-nix>sops-nix</h2>
+<p>To deploy secrets to our machine, we could think of these options:</p>
+<ul>
+<li>Write our secrets directly into <code>configuration.nix</code></li>
+<li>Write our secrets into a file in the machine, (such as <code>/secret/my-secret</code>), and reference that file in <code>configuration.nix</code></li>
+</ul>
+<p><a href=https://github.com/Mic92/sops-nix>sops-nix</a> uses a <strong>hybrid</strong> approach: our secrets will be stored encrypted in our configuration. When the machine boots up, it try to decrypt them using the age key, and put them into a specific path (<code>config.sops.secrets.&lt;my-secret>.path</code>).</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{ config<span style=color:#f92672>,</span> pkgs<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }: {
+  sops<span style=color:#f92672>.</span>age<span style=color:#f92672>.</span>keyFile <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/secrets/age/keys.txt&#34;</span>;
+}
+</code></pre></div><p>If you prefer to configure your secrets in another way, make sure to replace the lines that use sops with your solution. However, if you want to use sops, read the upstream documentation to get started.</p>
+<h2 id=gitea>Gitea</h2>
+<p>NixOS provides a <strong>module</strong> to setup Gitea. We only need to add the postgres configuration, and our password via sops. Note that this configuration was taken by <a href=https://mcwhirter.com.au/craige/blog/2019/Deploying_Gitea_on_NixOS>this post by Craige McWhirter</a>, without much modification.</p>
+<p>The service will listen on the port <code>3001</code>, where it will receive the http requests forwarded by nginx.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{ config<span style=color:#f92672>,</span> pkgs<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
 {
-  inputs <span style=color:#f92672>=</span> {
-    nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
-    flake-utils-plus<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gytis-ivaskevicius/flake-utils-plus</span>;
-  };
-
-  outputs <span style=color:#f92672>=</span> inputs<span style=color:#f92672>@</span>{ self<span style=color:#f92672>,</span> nixpkgs<span style=color:#f92672>,</span> flake-utils-plus<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
-    flake-utils-plus<span style=color:#f92672>.</span>lib<span style=color:#f92672>.</span>mkFlake {
-      <span style=color:#66d9ef>inherit</span> self inputs;
-
-      <span style=color:#75715e># Our system-independent outputs go here</span>
-      <span style=color:#75715e># E.g. NixOS configurations</span>
-
-      outputsBuilder <span style=color:#f92672>=</span> (channels: {
-
-        <span style=color:#75715e># Our system-dependent outputs go here</span>
-        <span style=color:#75715e># E.g. packages, shell environments, etc</span>
-
-      });
-    };
-}
-</code></pre></div><p>The flake syntax require you to put an attribute set <code>{ inputs = { ... }, outputs = { ... } }</code>, such that:</p>
-<ul>
-<li><code>inputs</code> will contain url&rsquo;s other flakes or non-flake resources (such as any git repo). On the first call to the flake, these inputs will be <strong>&ldquo;locked&rdquo;</strong>: nix will pull the latest or specified version and write them to a <code>flake.lock</code> (similar to lock files in node, cargo, go, etc).</li>
-<li><code>inputs.flake-utils-plus</code> is a library that provides some common functions used in flakes, that help us save some lines of code (<a href=https://github.com/gytis-ivaskevicius/flake-utils-plus>GitHub link</a>).</li>
-<li><code>output</code> is a function, that that can take as input the <code>inputs</code> attribute. As a result, it returns another attribute set that contains our outputs. These outputs can take many forms, but we discuss our output in the next section.</li>
-</ul>
-<p>We can set our <strong>blog&rsquo;s flake outputs</strong> as follows:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{
-  inputs <span style=color:#f92672>=</span> {
-    nixpkgs<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:NixOS/nixpkgs/nixos-unstable</span>;
-    flake-utils-plus<span style=color:#f92672>.</span>url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gytis-ivaskevicius/flake-utils-plus</span>;
-
-    <span style=color:#75715e># Website template</span>
-    bookworm <span style=color:#f92672>=</span> {
-      url <span style=color:#f92672>=</span> <span style=color:#e6db74>github:gethugothemes/bookworm-light</span>;
-      flake <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span>;
+  services<span style=color:#f92672>.</span>nginx<span style=color:#f92672>.</span>virtualHosts<span style=color:#f92672>.</span><span style=color:#e6db74>&#34;git.my-domain.tld&#34;</span> <span style=color:#f92672>=</span> {
+    enableACME <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    forceSSL <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    locations<span style=color:#f92672>.</span><span style=color:#e6db74>&#34;/&#34;</span> <span style=color:#f92672>=</span> {
+      proxyPass <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;http://localhost:3001/&#34;</span>;
     };
   };
 
-  outputs <span style=color:#f92672>=</span> inputs<span style=color:#f92672>@</span>{ self<span style=color:#f92672>,</span> nixpkgs<span style=color:#f92672>,</span> flake-utils-plus<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
-    flake-utils-plus<span style=color:#f92672>.</span>lib<span style=color:#f92672>.</span>mkFlake {
-      <span style=color:#66d9ef>inherit</span> self inputs;
-
-      outputsBuilder <span style=color:#f92672>=</span> (channels:
-        <span style=color:#66d9ef>let</span>
-          pkgs <span style=color:#f92672>=</span> channels<span style=color:#f92672>.</span>nixpkgs; <span style=color:#75715e># quicker alias</span>
-        <span style=color:#66d9ef>in</span> {
-
-          home <span style=color:#f92672>=</span> pkgs<span style=color:#f92672>.</span>stdenv<span style=color:#f92672>.</span>mkDerivation {
-            name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;home&#34;</span>; <span style=color:#75715e># our package name, irrelevant in this case</span>
-            src <span style=color:#f92672>=</span> <span style=color:#e6db74>./.</span>;
-            buildPhase <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
-</span><span style=color:#e6db74>              mkdir -p themes
-</span><span style=color:#e6db74>              ln -s </span><span style=color:#e6db74>${</span>inputs<span style=color:#f92672>.</span>bookworm<span style=color:#e6db74>}</span><span style=color:#e6db74> themes/bookworm
-</span><span style=color:#e6db74>              </span><span style=color:#e6db74>${</span>pkgs<span style=color:#f92672>.</span>hugo<span style=color:#e6db74>}</span><span style=color:#e6db74>/bin/hugo --minify
-</span><span style=color:#e6db74>            &#39;&#39;</span>;
-            installPhase <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
-</span><span style=color:#e6db74>              cp -r public $out
-</span><span style=color:#e6db74>            &#39;&#39;</span>;
-            meta <span style=color:#f92672>=</span> <span style=color:#66d9ef>with</span> pkgs<span style=color:#f92672>.</span>lib; {
-              description <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;My awesome webpage&#34;</span>;
-              license <span style=color:#f92672>=</span> licenses<span style=color:#f92672>.</span>cc-by-nc-sa-40;
-              platforms <span style=color:#f92672>=</span> platforms<span style=color:#f92672>.</span>all;
-            };
-          };
-
-        });
-    };
-}
-</code></pre></div><p>We build our <code>home</code> output with the function <code>mkDerivation</code>. You can think of a derivation, as a folder which holds any stuff, and built with Nix. So, the <code>home</code> derivation will be a folder sitting in <code>/nix/store/&lt;hash>-home</code>, and it will contain all the contents of our static website. <code>mkDerivation</code> accepts some basic metadata, such as <code>name</code>, <code>src</code> or <code>meta</code>. The <code>xxxPhase</code> are just bash snippets, which run in a sandboxed environment (no packages, no internet, etc) to build our package. The build process is specific to this package, but the main idea still holds: we want to put our built website into <code>$out</code> (which is the path to the derivation, substituted by Nix). To do so, we call our hugo binary. Its location is in <code>/nix/store/&lt;hash>-hugo-&lt;version>/bin/hugo</code>, and this path can be called just by using <code>${pkgs.hugo}/bin/hugo</code>. In the same fashion, our template called <code>bookworm</code> is also a derivation (a folder!) sitting in the nix store, that we can reference with <code>${inputs.bookworm}</code>.</p>
-<p>Once our flake is defined, <code>nix build &lt;the path to the project>#home.x86_64-linux</code> will read the <code>flake.nix</code>, read the <code>flake.lock</code> with the specific versions for our inputs, and begin the build process for our output (<code>...#home</code>). Finally, a symlink to the derivation will be put under <code>./result</code> for our convenience.</p>
-<p>If you want to try for yourself, you can checkout this blog&rsquo;s repository and go to my last commit before writing this post. If all the sources are still available, you will get a exact copy of the website at that time:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/viperML/home
-cd home
-git checkout 416172a7da5129347fa95c166120a34252cc7815
-nix build .#home.x86_64-linux
-ls ./result <span style=color:#75715e># index.html, ...</span>
-<span style=color:#75715e># or to get a live-reloading local server</span>
-nix run .#serve
-</code></pre></div><h2 id=github-pages>GitHub pages</h2>
-<p>To deploy the website, there are many solutions, but the quickest one was to use GitHub pages for our GitHub repo. In a nutshell:</p>
+  services<span style=color:#f92672>.</span>postgresql <span style=color:#f92672>=</span> {
+    authentication <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;
+</span><span style=color:#e6db74>      local gitea all ident map=gitea-users
+</span><span style=color:#e6db74>    &#39;&#39;</span>;
+    identMap <span style=color:#f92672>=</span> <span style=color:#75715e># Map the gitea user to postgresql &#39;&#39;</span>
+      gitea-users gitea gitea
+    <span style=color:#e6db74>&#39;&#39;;
+</span><span style=color:#e6db74>  };
+</span><span style=color:#e6db74>
+</span><span style=color:#e6db74>  sops.secrets.&#34;postgres/gitea_dbpass&#34; = {
+</span><span style=color:#e6db74>    sopsFile = ../.secrets/postgres.yaml; # bring your own password file
+</span><span style=color:#e6db74>    owner = config.users.users.gitea.name;
+</span><span style=color:#e6db74>  };
+</span><span style=color:#e6db74>
+</span><span style=color:#e6db74>  services.gitea = {
+</span><span style=color:#e6db74>    enable = true;
+</span><span style=color:#e6db74>    appName = &#34;My awesome Gitea server&#34;; # Give the site a name
+</span><span style=color:#e6db74>    database = {
+</span><span style=color:#e6db74>      type = &#34;postgres&#34;;
+</span><span style=color:#e6db74>      passwordFile = config.sops.secrets.&#34;postgres/gitea_dbpass&#34;.path;
+</span><span style=color:#e6db74>    };
+</span><span style=color:#e6db74>    domain = &#34;git.my-domain.tld&#34;;
+</span><span style=color:#e6db74>    rootUrl = &#34;https://git.my-domain.tld/&#34;;
+</span><span style=color:#e6db74>    httpPort = 3001;
+</span><span style=color:#e6db74>  };
+</span><span style=color:#e6db74>}
+</span></code></pre></div><h2 id=drone>Drone</h2>
+<p>Drone is a piece of software that will perform our CI/CD pipelines. It is very similiar to how GitHub&rsquo;s actions or Gitlab&rsquo;s pipelines work, so:</p>
 <ol>
-<li>Push the static website to a specific branch</li>
-<li>Github will host deploy it for you</li>
-<li>You can even bring your own domain name, instead of the default <code>XXX.github.io</code></li>
+<li>We create a <code>.drone.yml</code> file in the root of a repository.</li>
+<li>This file defines some job(s) to execute under certain conditions, such as this example:</li>
 </ol>
-<p>You can check out the <a href=https://docs.github.com/en/pages/quickstart>GitHub Pages quickstart guide</a> for generic guide, but to use our nix infrastructure, we can use <a href=https://docs.github.com/en/actions>GitHub Actions</a>, to automatically build and push our site in the cloud. To do so, we will hook up an action to build our project with Nix, and push it into the <code>gh-pages</code> branch. This action is a file located at <code>&lt;project root>/.github/workflows/&lt;my-action>.yaml</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy to GH pages</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml>---
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>pipeline</span>
+<span style=color:#f92672>type</span>: <span style=color:#ae81ff>exec</span>
+<span style=color:#f92672>name</span>: <span style=color:#ae81ff>deploy</span>
 
-<span style=color:#f92672>on</span>:
-  <span style=color:#f92672>push</span>:
-    <span style=color:#f92672>branches</span>:
-      <span style=color:#75715e># We only want to build the branch with the source</span>
-      - <span style=color:#ae81ff>bookworm</span>
+<span style=color:#f92672>platform</span>:
+  <span style=color:#f92672>os</span>: <span style=color:#ae81ff>linux</span>
+  <span style=color:#f92672>arch</span>: <span style=color:#ae81ff>amd64</span>
 
-<span style=color:#f92672>jobs</span>:
-  <span style=color:#f92672>deploy</span>:
-    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy job</span>
-    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
-    <span style=color:#f92672>steps</span>:
-      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout</span>
-        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v2</span>
-        <span style=color:#f92672>with</span>:
-          <span style=color:#f92672>fetch-depth</span>: <span style=color:#ae81ff>0</span> <span style=color:#75715e># Nix Flakes doesn&#39;t work on shallow clones</span>
-
-      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Install nix with flakes</span>
-        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>cachix/install-nix-action@v16</span>
-        <span style=color:#f92672>with</span>:
-          <span style=color:#f92672>install_url</span>: <span style=color:#ae81ff>https://github.com/numtide/nix-unstable-installer/releases/download/nix-2.6.0pre20211228_ed3bc63/install</span>
-          <span style=color:#f92672>extra_nix_config</span>: |<span style=color:#e6db74>
-</span><span style=color:#e6db74>            </span>            <span style=color:#ae81ff>experimental-features = nix-command flakes</span>
-
-      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build static site</span>
-        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>nix build .#home.x86_64-linux</span>
-
-      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Deploy to gh-pages branch</span>
-        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-gh-pages@v3</span>
-        <span style=color:#f92672>if</span>: <span style=color:#ae81ff>github.ref == &#39;refs/heads/bookworm&#39;</span>
-        <span style=color:#f92672>with</span>:
-          <span style=color:#f92672>github_token</span>: <span style=color:#ae81ff>${{ secrets.GITHUB_TOKEN }}</span>
-          <span style=color:#75715e># Nix build puts the result derivation under ./result</span>
-          <span style=color:#f92672>publish_dir</span>: <span style=color:#ae81ff>./result</span>
-</code></pre></div><h2 id=finale>Finale</h2>
-<p>I hope this post has been useful to demistify Nix and flakes, and to give you ideas on how to integrate it in your project. This project doesn&rsquo;t have much complexity, and using flakes is probably overkill, but it may serve you as a reference on how to get started.</p>
-<h2 id=further-reading>Further reading</h2>
+<span style=color:#f92672>steps</span>:
+- <span style=color:#f92672>name</span>: <span style=color:#ae81ff>main-step</span>
+  <span style=color:#f92672>environment</span>:
+    <span style=color:#f92672>MY_SECRET</span>:
+      <span style=color:#f92672>from_secret</span>: <span style=color:#ae81ff>MY_SECRET</span>
+  <span style=color:#f92672>commands</span>:
+    - <span style=color:#ae81ff>nix run .#run-my-app</span>
+</code></pre></div><ol start=3>
+<li>Gitea&rsquo;s web interface will detect our jobs, and show a symbol with the job status, and a shortcut to Drone&rsquo;s control panel.</li>
+</ol>
+<p>To configure this, we need at least two components:</p>
 <ul>
-<li><a href=https://blog.ysndr.de/posts/internals/2021-01-01-flake-ification/>Yannik Sander - Building with Nix Flakes for, eh .. reasons!</a></li>
-<li><a href=https://www.tweag.io/blog/2020-05-25-flakes/>Eelco Dolstra - Nix Flakes: An introduction and tutorial</a></li>
-<li><a href=https://serokell.io/blog/practical-nix-flakes>Alexander Bantyev - Practical Nix Flakes</a></li>
+<li>The server: will communicate between Gitea and the runners</li>
+<li>The runners: will perform the builds. There are a <a href=https://docs.drone.io/runner/overview/>many runners</a> , but in this example I set-up two of them:
+<ul>
+<li>Docker runner, to run jobs inside docker containers</li>
+<li>Exec runner, to use the server&rsquo;s nix store (this results in cached results, environments, etc)</li>
 </ul>
+</li>
+</ul>
+<p>As there is no Drone module at the time of writing, I configured these systemd services based on <a href=https://github.com/Mic92/dotfiles/tree/035a2c22e161f4fbe4fcbd038c6464028ddce619/nixos/eve/modules/drone>Mic92&rsquo;s dotifiles</a>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{ config<span style=color:#f92672>,</span> pkgs<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
+<span style=color:#66d9ef>let</span>
+  droneserver <span style=color:#f92672>=</span> config<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>droneserver<span style=color:#f92672>.</span>name;
+<span style=color:#66d9ef>in</span>
+{
+  users<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>droneserver <span style=color:#f92672>=</span> {
+    isSystemUser <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    createHome <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    group <span style=color:#f92672>=</span> droneserver;
+  };
+  users<span style=color:#f92672>.</span>groups<span style=color:#f92672>.</span>droneserver <span style=color:#f92672>=</span> { };
+
+  services<span style=color:#f92672>.</span>nginx<span style=color:#f92672>.</span>virtualHosts<span style=color:#f92672>.</span><span style=color:#e6db74>&#34;drone.my-server.tld&#34;</span> <span style=color:#f92672>=</span> {
+    enableACME <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    forceSSL <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    locations<span style=color:#f92672>.</span><span style=color:#e6db74>&#34;/&#34;</span><span style=color:#f92672>.</span>proxyPass <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;http://localhost:3030/&#34;</span>;
+  };
+
+  services<span style=color:#f92672>.</span>postgresql <span style=color:#f92672>=</span> {
+    ensureDatabases <span style=color:#f92672>=</span> [ droneserver ];
+    ensureUsers <span style=color:#f92672>=</span> [{
+      name <span style=color:#f92672>=</span> droneserver;
+      ensurePermissions <span style=color:#f92672>=</span> {
+        <span style=color:#e6db74>&#34;DATABASE </span><span style=color:#e6db74>${</span>droneserver<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;ALL PRIVILEGES&#34;</span>;
+      };
+    }];
+  };
+
+  <span style=color:#75715e># Secrets configured:</span>
+  <span style=color:#75715e># - DRONE_GITEA_CLIENT_ID</span>
+  <span style=color:#75715e># - DRONE_GITEA_CLIENT_SECRET</span>
+  <span style=color:#75715e># - DRONE_RPC_SECRET</span>
+  <span style=color:#75715e># To get these secrets, please check Drone&#39;s documentation for Gitea integration:</span>
+  <span style=color:#75715e># https://docs.drone.io/server/provider/gitea/</span>
+
+  sops<span style=color:#f92672>.</span>secrets<span style=color:#f92672>.</span>drone <span style=color:#f92672>=</span> {
+    sopsFile <span style=color:#f92672>=</span> <span style=color:#e6db74>../.secrets/drone.yaml</span>;
+  };
+
+  systemd<span style=color:#f92672>.</span>services<span style=color:#f92672>.</span>drone-server <span style=color:#f92672>=</span> {
+    wantedBy <span style=color:#f92672>=</span> [ <span style=color:#e6db74>&#34;multi-user.target&#34;</span> ];
+    serviceConfig <span style=color:#f92672>=</span> {
+      EnvironmentFile <span style=color:#f92672>=</span> [
+        config<span style=color:#f92672>.</span>sops<span style=color:#f92672>.</span>secrets<span style=color:#f92672>.</span>drone<span style=color:#f92672>.</span>path
+      ];
+      Environment <span style=color:#f92672>=</span> [
+        <span style=color:#e6db74>&#34;DRONE_DATABASE_DATASOURCE=postgres:///droneserver?host=/run/postgresql&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_DATABASE_DRIVER=postgres&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_SERVER_PORT=:3030&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_USER_CREATE=username:viperML,admin:true&#34;</span> <span style=color:#75715e># set your admin username</span>
+
+        <span style=color:#e6db74>&#34;DRONE_GITEA_SERVER=https://git.my-domain.tld&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_SERVER_HOST=drone.my-domain.tld&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_SERVER_PROTO=https&#34;</span>
+      ];
+      ExecStart <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>pkgs<span style=color:#f92672>.</span>drone<span style=color:#e6db74>}</span><span style=color:#e6db74>/bin/drone-server&#34;</span>;
+      User <span style=color:#f92672>=</span> droneserver;
+      Group <span style=color:#f92672>=</span> droneserver;
+    };
+  };
+
+  <span style=color:#75715e>### Docker runner</span>
+
+  users<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>drone-runner-docker <span style=color:#f92672>=</span> {
+    isSystemUser <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    group <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;drone-runner-docker&#34;</span>;
+  };
+  users<span style=color:#f92672>.</span>groups<span style=color:#f92672>.</span>drone-runner-docker <span style=color:#f92672>=</span> { };
+  <span style=color:#75715e># Allow the runner to use docker</span>
+  users<span style=color:#f92672>.</span>groups<span style=color:#f92672>.</span>docker<span style=color:#f92672>.</span>members <span style=color:#f92672>=</span> [ <span style=color:#e6db74>&#34;drone-runner-docker&#34;</span> ];
+
+  systemd<span style=color:#f92672>.</span>services<span style=color:#f92672>.</span>drone-runner-docker <span style=color:#f92672>=</span> {
+    enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    wantedBy <span style=color:#f92672>=</span> [ <span style=color:#e6db74>&#34;multi-user.target&#34;</span> ];
+    <span style=color:#75715e>### MANUALLY RESTART SERVICE IF CHANGED</span>
+    restartIfChanged <span style=color:#f92672>=</span> <span style=color:#66d9ef>false</span>;
+    serviceConfig <span style=color:#f92672>=</span> {
+      Environment <span style=color:#f92672>=</span> [
+        <span style=color:#e6db74>&#34;DRONE_RPC_PROTO=http&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_RPC_HOST=localhost:3030&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_RUNNER_CAPACITY=2&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_RUNNER_NAME=drone-runner-docker&#34;</span>
+      ];
+      EnvironmentFile <span style=color:#f92672>=</span> [
+        config<span style=color:#f92672>.</span>sops<span style=color:#f92672>.</span>secrets<span style=color:#f92672>.</span>drone<span style=color:#f92672>.</span>path
+      ];
+      ExecStart <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>pkgs<span style=color:#f92672>.</span>drone-runner-docker<span style=color:#e6db74>}</span><span style=color:#e6db74>/bin/drone-runner-docker&#34;</span>;
+      User <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;drone-runner-docker&#34;</span>;
+      Group <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;drone-runner-docker&#34;</span>;
+    };
+  };
+
+  <span style=color:#75715e>### Exec runner</span>
+  
+  users<span style=color:#f92672>.</span>users<span style=color:#f92672>.</span>drone-runner-exec <span style=color:#f92672>=</span> {
+    isSystemUser <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    group <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;drone-runner-exec&#34;</span>;
+  };
+  users<span style=color:#f92672>.</span>groups<span style=color:#f92672>.</span>drone-runner-exec <span style=color:#f92672>=</span> { };
+  <span style=color:#75715e># Allow the exec runner to write to build with nix</span>
+  nix<span style=color:#f92672>.</span>allowedUsers <span style=color:#f92672>=</span> [ <span style=color:#e6db74>&#34;drone-runner-exec&#34;</span> ];
+
+  systemd<span style=color:#f92672>.</span>services<span style=color:#f92672>.</span>drone-runner-exec <span style=color:#f92672>=</span> {
+    enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    wantedBy <span style=color:#f92672>=</span> [ <span style=color:#e6db74>&#34;multi-user.target&#34;</span> ];
+    <span style=color:#75715e>### MANUALLY RESTART SERVICE IF CHANGED</span>
+    restartIfChanged <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    confinement<span style=color:#f92672>.</span>enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    confinement<span style=color:#f92672>.</span>packages <span style=color:#f92672>=</span> [
+      pkgs<span style=color:#f92672>.</span>git
+      pkgs<span style=color:#f92672>.</span>gnutar
+      pkgs<span style=color:#f92672>.</span>bash
+      pkgs<span style=color:#f92672>.</span>nixFlakes
+      pkgs<span style=color:#f92672>.</span>gzip
+    ];
+    path <span style=color:#f92672>=</span> [
+      pkgs<span style=color:#f92672>.</span>git
+      pkgs<span style=color:#f92672>.</span>gnutar
+      pkgs<span style=color:#f92672>.</span>bash
+      pkgs<span style=color:#f92672>.</span>nixFlakes
+      pkgs<span style=color:#f92672>.</span>gzip
+    ];
+    serviceConfig <span style=color:#f92672>=</span> {
+      Environment <span style=color:#f92672>=</span> [
+        <span style=color:#e6db74>&#34;DRONE_RPC_PROTO=http&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_RPC_HOST=127.0.0.1:3030&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_RUNNER_CAPACITY=2&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_RUNNER_NAME=drone-runner-exec&#34;</span>
+        <span style=color:#e6db74>&#34;NIX_REMOTE=daemon&#34;</span>
+        <span style=color:#e6db74>&#34;PAGER=cat&#34;</span>
+        <span style=color:#e6db74>&#34;DRONE_DEBUG=true&#34;</span>
+      ];
+      BindPaths <span style=color:#f92672>=</span> [
+        <span style=color:#e6db74>&#34;/nix/var/nix/daemon-socket/socket&#34;</span>
+        <span style=color:#e6db74>&#34;/run/nscd/socket&#34;</span>
+        <span style=color:#75715e># &#34;/var/lib/drone&#34;</span>
+      ];
+      BindReadOnlyPaths <span style=color:#f92672>=</span> [
+        <span style=color:#e6db74>&#34;/etc/passwd:/etc/passwd&#34;</span>
+        <span style=color:#e6db74>&#34;/etc/group:/etc/group&#34;</span>
+        <span style=color:#e6db74>&#34;/nix/var/nix/profiles/system/etc/nix:/etc/nix&#34;</span>
+        <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>config<span style=color:#f92672>.</span>environment<span style=color:#f92672>.</span>etc<span style=color:#f92672>.</span><span style=color:#e6db74>&#34;ssl/certs/ca-certificates.crt&#34;</span><span style=color:#f92672>.</span>source<span style=color:#e6db74>}</span><span style=color:#e6db74>:/etc/ssl/certs/ca-certificates.crt&#34;</span>
+        <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>config<span style=color:#f92672>.</span>environment<span style=color:#f92672>.</span>etc<span style=color:#f92672>.</span><span style=color:#e6db74>&#34;ssh/ssh_known_hosts&#34;</span><span style=color:#f92672>.</span>source<span style=color:#e6db74>}</span><span style=color:#e6db74>:/etc/ssh/ssh_known_hosts&#34;</span>
+        <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>builtins<span style=color:#f92672>.</span>toFile <span style=color:#e6db74>&#34;ssh_config&#34;</span> <span style=color:#e6db74>&#39;&#39;
+</span><span style=color:#e6db74>          Host git.ayats.org
+</span><span style=color:#e6db74>          ForwardAgent yes
+</span><span style=color:#e6db74>        &#39;&#39;</span><span style=color:#e6db74>}</span><span style=color:#e6db74>:/etc/ssh/ssh_config&#34;</span>
+        <span style=color:#e6db74>&#34;/etc/machine-id&#34;</span>
+        <span style=color:#e6db74>&#34;/etc/resolv.conf&#34;</span>
+        <span style=color:#e6db74>&#34;/nix/&#34;</span>
+      ];
+      EnvironmentFile <span style=color:#f92672>=</span> [
+        config<span style=color:#f92672>.</span>sops<span style=color:#f92672>.</span>secrets<span style=color:#f92672>.</span>drone<span style=color:#f92672>.</span>path
+      ];
+      ExecStart <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>pkgs<span style=color:#f92672>.</span>drone-runner-exec<span style=color:#e6db74>}</span><span style=color:#e6db74>/bin/drone-runner-exec&#34;</span>;
+      User <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;drone-runner-exec&#34;</span>;
+      Group <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;drone-runner-exec&#34;</span>;
+    };
+  };
+}
+</code></pre></div><blockquote>
+<p>Note: this setup runs both Gitea and Drone in the same machine. It could be beneficial to have different machines for each service, being for performance or security reasons.</p>
+</blockquote>
+<h2 id=nginx-acme-postgres-docker>Nginx, ACME, Postgres, Docker</h2>
+<p>Finally, to tie everything together, we set up a basic Nginx service, that proxies the requests to the virtual hosts, to the internal services. Remember to punch a hole in your firewall, as by default, the firewall is enabled with the ports closed!</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nix data-lang=nix>{ config<span style=color:#f92672>,</span> pkgs<span style=color:#f92672>,</span> <span style=color:#f92672>...</span> }:
+  networking<span style=color:#f92672>.</span>firewall<span style=color:#f92672>.</span>allowedTCPPorts <span style=color:#960050;background-color:#1e0010>=</span> [ <span style=color:#ae81ff>80</span> <span style=color:#ae81ff>443</span> ];
+
+  services<span style=color:#f92672>.</span>nginx <span style=color:#960050;background-color:#1e0010>=</span> {
+    enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    recommendedGzipSettings <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    recommendedOptimisation <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    recommendedProxySettings <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    recommendedTlsSettings <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+  };
+
+  security<span style=color:#f92672>.</span>acme <span style=color:#960050;background-color:#1e0010>=</span> {
+    acceptTerms <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+    certs <span style=color:#f92672>=</span> {
+      <span style=color:#e6db74>&#34;git.my-domain.tld&#34;</span><span style=color:#f92672>.</span>email <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;foo@bar.com&#34;</span>;
+      <span style=color:#e6db74>&#34;drone.my-domain.tld&#34;</span><span style=color:#f92672>.</span>email <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;foo@bar.com&#34;</span>;
+    };
+  };
+
+  services<span style=color:#f92672>.</span>postgresql <span style=color:#960050;background-color:#1e0010>=</span> {
+    enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+  };
+
+  virtualisation<span style=color:#f92672>.</span>docker <span style=color:#960050;background-color:#1e0010>=</span> {
+    enable <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>;
+  };
+<span style=color:#960050;background-color:#1e0010>}</span>
+</code></pre></div><h2 id=finale>Finale</h2>
+<p>I hope that this helps you set-up your Gitea server. This write-up is based on my own configuration, with some simplifications. You can check the whole flake here: <a href=https://github.com/viperML/infra/tree/8a876582bd881ad01f58081a529d68019040ef8a>github.com/viperML/infra</a>.If you find any errors or suggestions, please submit a issue or pull request at the repo of this blog: <a href=https://github.com/viperML/home>github.com/viperML/home</a>.</p>
 </div>
 </div>
 </div>
@@ -281,14 +412,13 @@ nix run .#serve
 <div class="col-lg-5 col-md-6 text-center text-md-left">
 <ul class="post-meta-tags list-unstyled list-inline">
 <li class=list-inline-item><a href=https://ayats.org/tags/nix>Nix</a></li>
-<li class=list-inline-item><a href=https://ayats.org/tags/hugo>Hugo</a></li>
-<li class=list-inline-item><a href=https://ayats.org/tags/github>GitHub</a></li>
+<li class=list-inline-item><a href=https://ayats.org/tags/cloud>Cloud</a></li>
 </ul>
 </div>
 <div class="col-lg-5 col-md-6 text-center text-md-right mt-4 mt-md-0">
 <ul class="social-links has-bg-color list-unstyled list-inline" style=line-height:0>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fayats.org%2fblog%2fgitea-drone%2f" target=_blank rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="lab la-facebook-f text-dark"></i>
@@ -297,7 +427,7 @@ nix run .#serve
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="https://twitter.com/intent/tweet/?text=Static%20blog%20with%20Hugo%20and%20Nix%20flakes&url=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="https://twitter.com/intent/tweet/?text=Private%20git%20repository%20with%20NixOS%2c%20Gitea%20and%20Drone&url=https%3a%2f%2fayats.org%2fblog%2fgitea-drone%2f" target=_blank rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="lab la-twitter text-dark"></i>
@@ -306,7 +436,7 @@ nix run .#serve
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="https://plus.google.com/share?url=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="https://plus.google.com/share?url=https%3a%2f%2fayats.org%2fblog%2fgitea-drone%2f" target=_blank rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--google resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="lab la-google-plus-g text-dark"></i>
@@ -315,7 +445,7 @@ nix run .#serve
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="mailto:?subject=Static%20blog%20with%20Hugo%20and%20Nix%20flakes&body=https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_self rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="mailto:?subject=Private%20git%20repository%20with%20NixOS%2c%20Gitea%20and%20Drone&body=https%3a%2f%2fayats.org%2fblog%2fgitea-drone%2f" target=_self rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="las la-envelope text-dark"></i>
@@ -324,7 +454,7 @@ nix run .#serve
 </a>
 </li>
 <li class=list-inline-item>
-<a class="resp-sharing-button__link d-block" href="whatsapp://send?text=Static%20blog%20with%20Hugo%20and%20Nix%20flakes%20https%3a%2f%2fayats.org%2fblog%2fflake-blog%2f" target=_blank rel=noopener aria-label>
+<a class="resp-sharing-button__link d-block" href="whatsapp://send?text=Private%20git%20repository%20with%20NixOS%2c%20Gitea%20and%20Drone%20https%3a%2f%2fayats.org%2fblog%2fgitea-drone%2f" target=_blank rel=noopener aria-label>
 <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--small">
 <div aria-hidden=true class="resp-sharing-button__icon resp-sharing-button__icon--solid">
 <i class="lab la-whatsapp text-dark"></i>
@@ -362,13 +492,13 @@ nix run .#serve
 </div>
 <div class=col-md-6>
 <article class="card post-card">
-<a href=https://ayats.org/blog/nix-intro/>
+<a href=https://ayats.org/blog/deploy-rs-example/>
 <picture>
-<source srcset=/images/post/liam-shaw-qEGtoChlnqk-unsplash_hu438eaa4e7c890ff4833f213d488c3e43_234413_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
-<source srcset=/images/post/liam-shaw-qEGtoChlnqk-unsplash_hu438eaa4e7c890ff4833f213d488c3e43_234413_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
-<source srcset=/images/post/liam-shaw-qEGtoChlnqk-unsplash_hu438eaa4e7c890ff4833f213d488c3e43_234413_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
-<source srcset=/images/post/liam-shaw-qEGtoChlnqk-unsplash_hu438eaa4e7c890ff4833f213d488c3e43_234413_1110x0_resize_q95_h2_box.webp>
-<img loading=lazy decoding=async class="w-100 h-auto rounded" src=/images/post/liam-shaw-qEGtoChlnqk-unsplash_hu438eaa4e7c890ff4833f213d488c3e43_234413_1110x0_resize_q95_box.jpg alt="Into the Nix" width=1920 height=1280>
+<source srcset=/images/post/christopher-burns-Wiu3w-99tNg-unsplash_hu3cf669ed3b0b7cae22419bd27b7e4fa9_2422235_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
+<source srcset=/images/post/christopher-burns-Wiu3w-99tNg-unsplash_hu3cf669ed3b0b7cae22419bd27b7e4fa9_2422235_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
+<source srcset=/images/post/christopher-burns-Wiu3w-99tNg-unsplash_hu3cf669ed3b0b7cae22419bd27b7e4fa9_2422235_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
+<source srcset=/images/post/christopher-burns-Wiu3w-99tNg-unsplash_hu3cf669ed3b0b7cae22419bd27b7e4fa9_2422235_1110x0_resize_q95_h2_box.webp>
+<img loading=lazy decoding=async class="w-100 h-auto rounded" src=/images/post/christopher-burns-Wiu3w-99tNg-unsplash_hu3cf669ed3b0b7cae22419bd27b7e4fa9_2422235_1110x0_resize_q95_box.jpg alt="NixOS on Hetzner Cloud with deploy-rs" width=5760 height=3840>
 </picture>
 </a>
 <div class=card-body>
@@ -380,42 +510,7 @@ nix run .#serve
 </a>
 </li>
 <li class="list-inline-item mb-2">
-<span>05 Jan, 2022</span>
-</li>
-<li class="list-inline-item mb-2">
-<ul class="card-meta-tag list-inline">
-<li class=list-inline-item><a href=https://ayats.org/tags/nix>Nix</a></li>
-</ul>
-</li>
-</ul>
-<h3 class=mb-3>
-<a class=post-title href=https://ayats.org/blog/nix-intro/>Into the Nix</a>
-</h3>
-<p>In this post I want to show a very brief introduction to Nix, the language and package manager, and how it can help you to achieve a fully …</p>
-</div>
-</article>
-</div>
-<div class=col-md-6>
-<article class="card post-card">
-<a href=https://ayats.org/blog/gitea-drone/>
-<picture>
-<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
-<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
-<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
-<source srcset=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_1110x0_resize_q95_h2_box.webp>
-<img loading=lazy decoding=async class="w-100 h-auto rounded" src=/images/post/nathan-dumlao-4hjgcuADlL8-unsplash_hu78701091f480f504172fb1837c5e20f1_3054082_1110x0_resize_q95_box.jpg alt="Private git repository with NixOS, Gitea and Drone" width=5774 height=3849>
-</picture>
-</a>
-<div class=card-body>
-<ul class="card-meta list-inline mb-2">
-<li class="list-inline-item mb-2">
-<a href=https://ayats.org/author/fernando/ class=card-meta-author>
-<img loading=lazy decoding=async src=/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_q95_h2_box_3.webp alt="Fernando Ayats" class=w-auto width=26 height=26 onerror="this.onerror='null',this.src='/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_box_3.png'">
-<span>Fernando Ayats</span>
-</a>
-</li>
-<li class="list-inline-item mb-2">
-<span>29 Jan, 2022</span>
+<span>12 Jan, 2022</span>
 </li>
 <li class="list-inline-item mb-2">
 <ul class="card-meta-tag list-inline">
@@ -425,9 +520,47 @@ nix run .#serve
 </li>
 </ul>
 <h3 class=mb-3>
-<a class=post-title href=https://ayats.org/blog/gitea-drone/>Private git repository with NixOS, Gitea and Drone</a>
+<a class=post-title href=https://ayats.org/blog/deploy-rs-example/>NixOS on Hetzner Cloud with deploy-rs</a>
 </h3>
-<p>In this post I want to show you how I set up a NixOS server running a private Gitea instance, with CI pipelines using Drone, all tied together with …</p>
+<p>deploy-rs is a tool developed by Serokell to deploy NixOS machines into a remote server. It allows for &amp;ldquo;stateless&amp;rdquo; deployments, such that …</p>
+</div>
+</article>
+</div>
+<div class=col-md-6>
+<article class="card post-card">
+<a href=https://ayats.org/blog/flake-blog/>
+<picture>
+<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_545x0_resize_q95_h2_box.webp media="(max-width: 575px)">
+<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_600x0_resize_q95_h2_box.webp media="(max-width: 767px)">
+<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_700x0_resize_q95_h2_box.webp media="(max-width: 991px)">
+<source srcset=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_h2_box.webp>
+<img loading=lazy decoding=async class="w-100 h-auto rounded" src=/images/post/daniele-buso-qzUenL35ZYw-unsplash_hueee4619a26c2b0ecdcb5ccab13f7095e_1959320_1110x0_resize_q95_box.jpg alt="Static blog with Hugo and Nix flakes" width=4002 height=2998>
+</picture>
+</a>
+<div class=card-body>
+<ul class="card-meta list-inline mb-2">
+<li class="list-inline-item mb-2">
+<a href=https://ayats.org/author/fernando/ class=card-meta-author>
+<img loading=lazy decoding=async src=/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_q95_h2_box_3.webp alt="Fernando Ayats" class=w-auto width=26 height=26 onerror="this.onerror='null',this.src='/images/author/author_huecaac65229381aab3e13256ec3657259_53621_26x26_resize_box_3.png'">
+<span>Fernando Ayats</span>
+</a>
+</li>
+<li class="list-inline-item mb-2">
+<span>06 Jan, 2022</span>
+</li>
+<li class="list-inline-item mb-2">
+<ul class="card-meta-tag list-inline">
+<li class=list-inline-item><a href=https://ayats.org/tags/nix>Nix</a></li>
+<li class=list-inline-item><a href=https://ayats.org/tags/hugo>Hugo</a></li>
+<li class=list-inline-item><a href=https://ayats.org/tags/github>GitHub</a></li>
+</ul>
+</li>
+</ul>
+<h3 class=mb-3>
+<a class=post-title href=https://ayats.org/blog/flake-blog/>Static blog with Hugo and Nix flakes</a>
+</h3>
+<p>By using this blog as an example, I want to show you how you can use nix flakes for your project.
+Why flakes? Nix expressions can be pure, in the …</p>
 </div>
 </article>
 </div>
