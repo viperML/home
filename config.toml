@@ -73,8 +73,8 @@ color_primary = "#01AD9F"
 
 #################### default parameters ################################
 [params]
-logo = "images/logo.png"
-logo_width = "130px"
+logo = "images/logo.svg"
+# logo_width = "130px"
 favicon = "images/favicon.png"
 # Meta data
 description = "My personal website"
