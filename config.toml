@@ -1,7 +1,7 @@
 ######################## default configuration ####################
 baseURL = "https://ayats.org/"
 title = "ayats.org"
-theme = "bookworm"
+theme = "bookworm-light"
 # post pagination
 paginate = "3"
 # post excerpt

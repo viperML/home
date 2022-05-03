@@ -1,74 +1,38 @@
 {
-  description = "My flake";
+  inputs.nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
 
-  inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
-    flake-utils-plus.url = github:gytis-ivaskevicius/flake-utils-plus;
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
+  outputs = {
+    self,
+    nixpkgs,
+  }: let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
     };
-
-    bookworm = {
-      url = github:gethugothemes/bookworm-light;
-      flake = false;
+    bookworm-light = pkgs.fetchFromGitHub {
+      owner = "gethugothemes";
+      repo = "bookworm-light";
+      rev = "47981c600c2c6adde3af0742c2ab352d1464f46b";
+      sha256 = "sha256-p4G8vKY/wnWpSJV0JK89R8wyZn/C6ecyrJZGkDkiDX0=";
     };
+    themes = pkgs.runCommandNoCC "themes" {} ''
+      mkdir -p $out/themes
+      ln -s ${bookworm-light} $out/bookworm-light
+    '';
+  in {
+    packages.${system}.default = with pkgs;
+      stdenv.mkDerivation {
+        pname = "home";
+        version = self.lastModifiedDate;
+        src = self;
+        buildInputs = [hugo];
+        HUGO_THEMESDIR = themes;
+        buildPhase = ''
+          mkdir -p $out
+          hugo --minify --destination $out
+        '';
+        dontInstall = true;
+      };
   };
-
-  outputs = inputs @ { self, nixpkgs, flake-utils-plus, ... }:
-    flake-utils-plus.lib.mkFlake {
-      inherit self inputs;
-
-      channelsConfig = { allowUnfree = true; };
-
-      outputsBuilder = (channels:
-        let
-          pkgs = channels.nixpkgs;
-        in
-        {
-
-          home = pkgs.stdenv.mkDerivation {
-            name = "viperML-home";
-            src = ./.;
-            buildPhase = ''
-              mkdir -p themes
-              ln -s ${inputs.bookworm} themes/bookworm
-              ${pkgs.hugo}/bin/hugo --minify
-            '';
-            installPhase = ''
-              cp -r public $out
-            '';
-            meta = with pkgs.lib; {
-              description = "My awesome webpage";
-              license = licenses.cc-by-nc-sa-40;
-              platforms = platforms.all;
-            };
-          };
-
-          devShell = pkgs.mkShell {
-            name = "viperML-home";
-            shellHook = ''
-              mkdir -p themes
-              ln -s ${inputs.bookworm} themes/bookworm
-            '';
-            buildInputs = with pkgs; [
-              hugo
-            ];
-          };
-
-          apps.serve = {
-            type = "app";
-            program = "${
-              pkgs.writeShellScriptBin "my-hugo-serve" ''
-                mkdir -p themes
-                ln -s ${inputs.bookworm} themes/bookworm
-                ${pkgs.hugo}/bin/hugo server
-              ''
-            }/bin/my-hugo-serve";
-          };
-
-        });
-
-
-    };
 }

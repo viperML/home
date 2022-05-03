@@ -1,3 +1,0 @@
-#!/bin/sh
-nix flake check
-nix build .#home.x86_64-linux
