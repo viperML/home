@@ -21,18 +21,23 @@
       ln -s ${bookworm-light} $out/bookworm-light
     '';
   in {
-    packages.${system}.default = with pkgs;
-      stdenv.mkDerivation {
-        pname = "home";
-        version = self.lastModifiedDate;
-        src = self;
-        buildInputs = [hugo];
-        HUGO_THEMESDIR = themes;
-        buildPhase = ''
-          mkdir -p $out
-          hugo --minify --destination $out
-        '';
-        dontInstall = true;
-      };
+    packages.${system} = {
+      default = with pkgs;
+        stdenv.mkDerivation {
+          pname = "home";
+          version = self.lastModifiedDate;
+          src = self;
+          buildInputs = [hugo];
+          HUGO_THEMESDIR = themes;
+          buildPhase = ''
+            mkdir -p $out
+            hugo --minify --destination $out
+          '';
+          dontInstall = true;
+        };
+    };
+    serve = with pkgs; writeShellScriptBin "init" ''
+      ${lib.getExe ran} -r ${self.packages.${system}.default}
+    '';
   };
 }
