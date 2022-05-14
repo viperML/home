@@ -36,7 +36,7 @@
           dontInstall = true;
         };
     };
-    serve = with pkgs; writeShellScriptBin "init" ''
+    serve = with pkgs; writeShellScriptBin "serve" ''
       ${lib.getExe ran} -r ${self.packages.${system}.default}
     '';
   };
