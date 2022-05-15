@@ -14,8 +14,8 @@ job "http-store" {
       driver = "containerd-driver"
 
       config {
-        flake_ref = "github:viperML/home/e10da1c7f542515b609f8dfbcf788f3d85b14936#serve"
-        flake_sha = "sha256-GNay7yDPtLcRcKCNHldug85AhAvBpTtPEJWSSDYBw8U="
+        flake_ref = "github:viperML/home/bfc57dcd3457106c942ca9a6d59a459a49a5cc7b#serve"
+        flake_sha = "sha256-dCrsEghTQD81QzgcBp3K88jy7c5M5eobWcG3LPwW32g="
         entrypoint = [
           "bin/serve",
         ]
