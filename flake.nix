@@ -35,9 +35,10 @@
           '';
           dontInstall = true;
         };
+      serve = with pkgs;
+        writeShellScriptBin "serve" ''
+          ${lib.getExe ran} -r ${self.packages.${system}.default}
+        '';
     };
-    serve = with pkgs; writeShellScriptBin "serve" ''
-      ${lib.getExe ran} -r ${self.packages.${system}.default}
-    '';
   };
 }
