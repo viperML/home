@@ -40,5 +40,13 @@
           ${lib.getExe ran} -r ${self.packages.${system}.default}
         '';
     };
+    devShells.${system}.default = pkgs.mkShell {
+      packages = with pkgs; [
+        hugo
+        nomad
+      ];
+      HUGO_THEMESDIR = themes;
+      NOMAD_ADDR = "http://sumati:4646";
+    };
   };
 }
