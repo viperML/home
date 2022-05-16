@@ -1,4 +1,4 @@
-job "http-store" {
+job "blog" {
   datacenters = ["dc1"]
   group "main-group" {
     count = 1
@@ -10,12 +10,12 @@ job "http-store" {
       }
     }
 
-    task "miniserve" {
+    task "serve" {
       driver = "containerd-driver"
 
       config {
-        flake_ref = "github:viperML/home/bfc57dcd3457106c942ca9a6d59a459a49a5cc7b#serve"
-        flake_sha = "sha256-dCrsEghTQD81QzgcBp3K88jy7c5M5eobWcG3LPwW32g="
+        flake_ref = "github:viperML/home/${var.rev}#serve"
+        flake_sha = var.narHash
         entrypoint = [
           "bin/serve",
         ]
@@ -27,4 +27,16 @@ job "http-store" {
       }
     }
   }
+}
+
+variable "rev" {
+  type = string
+  validation {
+    condition = var.rev != "null"
+    error_message = "Git tree is dirty."
+  }
+}
+
+variable "narHash" {
+  type = string
 }
