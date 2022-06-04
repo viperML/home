@@ -1,9 +1,9 @@
 ---
 title: "Channels to flakes"
-image: "images/post/christopher-burns-Wiu3w-99tNg-unsplash.jpg"
+image: "images/post/arshad-pooloo-FK3s0hRpMNM-unsplash.jpg"
 date: 2022-02-12T14:49:55Z
 author: "Fernando"
-tags: ["Nix", "Cloud"]
+tags: ["Nix"]
 categories: ["Linux"]
 draft: true
 ---
