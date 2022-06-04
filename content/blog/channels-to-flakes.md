@@ -5,7 +5,7 @@ date: 2022-02-12T14:49:55Z
 author: "Fernando"
 tags: ["Nix", "Cloud"]
 categories: ["Linux"]
-draft: false
+draft: true
 ---
 
 ## From Channels to Flakes
