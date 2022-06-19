@@ -37,6 +37,9 @@
           '';
           dontInstall = true;
         };
+        serve = with pkgsFor.${system}; writeShellScriptBin "serve" ''
+          ${ran}/bin/ran -r ${default}
+        '';
     });
     devShells = genSystems (system: {
       default = pkgsFor.${system}.mkShell {
