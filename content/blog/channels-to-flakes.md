@@ -20,11 +20,11 @@ Your flake will have an input for nixpkgs, such as:
 }
 ```
 
-With the `flake.lock`, it defines the `rev` of nixpkgs that your configuration will use. But that ends there, as **any tool that doesn't use  that rev, will use some other nixpkgs rev**.
+With the `flake.lock`, it defines the `rev` of nixpkgs that your configuration will use. But that ends there, as **any tool that doesn't use  that revision, will use some other nixpkgs rev**.
 
 For example, non-flake tools such as `nix-shell` will use the channels, and `nix` tools will use the registry.
 
-To begin with, you will want to pass your inputs to the nixos or home-manager module system. This is very simple, and while we are at it, pass your entire `inputs`.
+First of all, you will want to pass your inputs to the nixos or home-manager module system. This is very simple, and while we are at it, pass your entire `inputs`.
 
 ```nix
 # flake.nix
@@ -68,9 +68,6 @@ $ docker run -it nixos/nix
 bash-4.4# printenv NIX_PATH
 /nix/var/nix/profiles/per-user/root/channels:/root/.nix-defexpr/channels
 
-bash-4.4# nix repl
-Welcome to Nix 2.9.0. Type :? for help.
-
 nix-repl> <nixpkgs>
 /nix/var/nix/profiles/per-user/root/channels/nixpkgs
 ```
@@ -93,46 +90,41 @@ So, the easiest solution is to set **NIX_PATH** to whatever nixpkgs our flake us
 }
 ```
 
+After applying the config and rebooting, you would see the output:
+```console
+$ printenv NIX_PATH
+nixpkgs=/etc/nix/inputs/nixpkgs
+
+nix-repl> <nixpkgs>
+/etc/nix/inputs/nixpkgs
+```
+Now any reference to `import <nixpkgs> {}` will use the system's nixpkgs 👏👏👏
+
 ## Pinning your registry
 Flake-enabled tools, such as `nix shell` or `nix build`, when supplied the `nixpkgs#` flake ref, will also use some nixpkgs rev that is not the one your built your system of. For example `nix build nixpkgs#hello` will resolve nixpkgs to `nixpkgs-unstable`, to whatever rev is the latest.
 
 These "aliases", such as `nixpkgs#` are resolved with the registry, which is a `json` that is parsed by the tool on startup. You can check its value with `nix registry list`.
 
-Pinning the registry in NixOS is quite easy, while the Home-manager (that I came up with) is more convoluted.
+Pinning the registry in NixOS and home-manager is equivalent:
 
 ```nix
-# configuration.nix
+# configuration.nix or home.nix
 {config, pkgs, inputs, lib, ...}: {
   nix.registry = with lib; mapAttrs' (name: value: nameValuePair name {flake = value;}) inputs;
 }
 ```
 
+After applying the config and rebooting, you would see the output:
+
 ```nix
-# home.nix
-{config, pkgs, inputs, lib, ...}: 
-with lib; let 
-  registry = builtins.toJSON {
-    flakes =
-      mapAttrsToList (n: v: {
-        exact = true;
-        from = {
-          id = n;
-          type = "indirect";
-        };
-        to = {
-          path = v.outPath;
-          type = "path";
-        };
-      })
-      inputs;
-    version = 2;
-  };
-in {
-  xdg.configFile."nix/registry.json".text = registry;
-}
+$ nix registry list | grep "flake:nixpkgs "
+user   flake:nixpkgs path:/nix/store/lyv9kw3jv8dwp7lr5ik22k3w01rf24w2-source
+system flake:nixpkgs path:/nix/store/lyv9kw3jv8dwp7lr5ik22k3w01rf24w2-source
+global flake:nixpkgs github:NixOS/nixpkgs/nixpkgs-unstable
 ```
 
+Now any reference to `nixpkgs#` will use the system's nixpkgs  👏👏👏
 ## Conclusion
-With this, now your system will use the same version of nixpkgs everywhere! And you won't pull gigabytes of packages after running some command, and using the nix-channel that you didn't update since ages! 👏👏
+With this, now your system will use the same version of nixpkgs everywhere! Feel free to remove any other channel that you had lying around.
 
-Is this bad UX for flakes? In my honest opinion, yeah. But this also requires passing down `inputs` to your modules, which is not the default... Maybe in the future, we will not need to do this at all.
+Is this bad UX for flakes? In my honest opinion, yes. But this also requires passing down `inputs` to your modules, which is not the default... Maybe in the future, we will not need to do this at all.
