@@ -47,6 +47,9 @@
             '';
             dontInstall = true;
           };
+          serve = pkgs.writeShellScriptBin "serve" ''
+            ${pkgs.ran}/bin/ran -r ${self'.packages.default}
+          '';
         };
         devShells.default = pkgs.mkShellNoCC {
           name = "home";
