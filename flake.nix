@@ -29,7 +29,10 @@
           pname = "home";
           version = self.lastModifiedDate;
           src = self;
-          nativeBuildInputs = [hugo];
+          nativeBuildInputs = [
+            hugo
+            asciidoctor
+          ];
           HUGO_THEMESDIR = themes;
           buildPhase = ''
             mkdir -p $out
@@ -37,15 +40,18 @@
           '';
           dontInstall = true;
         };
-        serve = with pkgsFor.${system}; writeShellScriptBin "serve" ''
+      serve = with pkgsFor.${system};
+        writeShellScriptBin "serve" ''
           ${ran}/bin/ran -r ${default}
         '';
     });
     devShells = genSystems (system: {
-      default = pkgsFor.${system}.mkShell {
+      default = pkgsFor.${system}.mkShellNoCC {
         name = "hugo-devshell";
         inputsFrom = [self.packages.${system}.default];
-        packages = [pkgsFor.${system}.nomad];
+        packages = [
+          pkgsFor.${system}.nomad
+        ];
         HUGO_THEMESDIR = self.packages.${system}.themes;
         NOMAD_ADDR = "http://sumati:4646";
       };

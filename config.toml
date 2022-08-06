@@ -141,23 +141,23 @@ url = "#"
 name = "Pages"
 hasChildren = true
 
-  [[menu.main]]
-  parent = "Pages"
-  name = "Author"
-  url = "author/"
-  weight = 1
+[[menu.main]]
+parent = "Pages"
+name = "Author"
+url = "author/"
+weight = 1
 
-  [[menu.main]]
-  parent = "Pages"
-  name = "Tags"
-  url = "tags/"
-  weight = 2
+[[menu.main]]
+parent = "Pages"
+name = "Tags"
+url = "tags/"
+weight = 2
 
-  [[menu.main]]
-  parent = "Pages"
-  name = "Category"
-  url = "categories/"
-  weight = 3
+[[menu.main]]
+parent = "Pages"
+name = "Category"
+url = "categories/"
+weight = 3
 
   # [[menu.main]]
   # parent = "Pages"
@@ -219,3 +219,32 @@ url = "https://www.linkedin.com/in/ayatsfer/"
 [[params.social]]
 icon = "lab la-github"
 url = "https://www.github.com/viperML"
+
+# [markup.asciidocext]
+# backend = "html5"
+# workingfoldercurrent = false
+# trace = true
+# verbose = true
+
+  [markup.asciidocext.attributes]
+#   includedir = "include"
+#   icons = "font"
+#   experimental = true
+#   sectlinks = true
+#   sectanchors = true
+  source-highlighter = "rouge"
+  rouge-css = "style"
+  rouge-style = "github"
+
+[security]
+  enableInlineShortcodes = false
+  [security.exec]
+    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$', '^asciidoctor$']
+    osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
+
+  [security.funcs]
+    getenv = ['^HUGO_']
+
+  [security.http]
+    methods = ['(?i)GET|POST']
+    urls = ['.*']
