@@ -53,7 +53,6 @@
           pkgsFor.${system}.nomad
         ];
         HUGO_THEMESDIR = self.packages.${system}.themes;
-        NOMAD_ADDR = "http://sumati:4646";
       };
     });
   };
