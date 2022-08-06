@@ -1,7 +1,8 @@
-job "blog" {
+job "home" {
   datacenters = ["dc1"]
-  group "main-group" {
+  group "group" {
     count = 1
+
     network {
       mode = "bridge"
       port "http" {
