@@ -94,7 +94,7 @@ mainSections = ["blog"]
 
 # Preloader
 [params.preloader]
-enable = true
+enable = false
 preloader = "jpg" # use jpg, png, svg or gif format.
 
 # Instagram feed
