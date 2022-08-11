@@ -90,7 +90,9 @@ search = false
 # main section
 mainSections = ["blog"]
 # copyright
-# copyright = "The content for this site is [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/2.0/). Bookworm theme © Designed by [Themefisher](https://themefisher.com/) and Developed by [Gethugothemes](https://gethugothemes.com/)"
+copyright = """All the content for this site is copyright Fernando Ayats licensed under [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/2.0/).
+
+Bookworm theme © Designed by [Themefisher](https://themefisher.com/) and Developed by [Gethugothemes](https://gethugothemes.com/)"""
 
 # Preloader
 [params.preloader]
@@ -129,39 +131,40 @@ name = "About"
 url = "about/"
 weight = 3
 
-# [[menu.main]]
-# name = "Contact"
-# url = "contact/"
-# weight = 4
+
+[[menu.main]]
+name = "Tags"
+url = "tags/"
+weight = 4
 
 # [[menu.main]]
 # name = "Buy Premium"
 # url = "https://gethugothemes.com/products/bookworm/"
 # weight = 5
 
-[[menu.main]]
-weight = 6
-url = "#"
-name = "Pages"
-hasChildren = true
+# [[menu.main]]
+# weight = 6
+# url = "#"
+# name = "Pages"
+# hasChildren = true
 
-[[menu.main]]
-parent = "Pages"
-name = "Author"
-url = "author/"
-weight = 1
+# [[menu.main]]
+# parent = "Pages"
+# name = "Author"
+# url = "author/"
+# weight = 1
 
-[[menu.main]]
-parent = "Pages"
-name = "Tags"
-url = "tags/"
-weight = 2
+# [[menu.main]]
+# parent = "Tags"
+# name = "Tags"
+# url = "tags/"
+# weight = 1
 
-[[menu.main]]
-parent = "Pages"
-name = "Category"
-url = "categories/"
-weight = 3
+# [[menu.main]]
+# parent = "Pages"
+# name = "Category"
+# url = "categories/"
+# weight = 3
 
   # [[menu.main]]
   # parent = "Pages"
@@ -169,11 +172,11 @@ weight = 3
   # weight = 4
   # url = "elements/"
 
-  [[menu.main]]
-  parent = "Pages"
-  name = "Privacy"
-  url = "privacy/"
-  weight = 5
+  # [[menu.main]]
+  # parent = "Pages"
+  # name = "Privacy"
+  # url = "privacy/"
+  # weight = 5
 
   # [[menu.main]]
   # parent = "Pages"
@@ -182,10 +185,10 @@ weight = 3
   # weight = 6
 
 ############################# Footer Menu ########################
-[[menu.footer]]
-name = "About"
-url = "about/"
-weight = 1
+# [[menu.footer]]
+# name = "About"
+# url = "about/"
+# weight = 1
 
 # [[menu.footer]]
 # name = "Authors"
@@ -199,18 +202,18 @@ weight = 1
 
 [[menu.footer]]
 weight = 5
-name = "Source code"
+name = "Built from source with nix"
 url = "https://github.com/viperML/home/tree/bookworm"
 
-[[menu.footer]]
-name = "Terms & Conditions"
-url = "terms-conditions/"
-weight = 4
+# [[menu.footer]]
+# name = "Terms & Conditions"
+# url = "terms-conditions/"
+# weight = 4
 
 # # Social Icons
-[[params.social]]
-icon = "las la-link"
-url = "https://ayats.org"
+# [[params.social]]
+# icon = "las la-link"
+# url = "https://ayats.org"
 
 [[params.social]]
 icon = "las la-envelope"
@@ -223,6 +226,10 @@ url = "https://www.linkedin.com/in/ayatsfer/"
 [[params.social]]
 icon = "lab la-github"
 url = "https://www.github.com/viperML"
+
+[[params.social]]
+icon = "lab la-gitlab"
+url = "https://gitlab.com/viperML"
 
 # [markup.asciidocext]
 # backend = "html5"
