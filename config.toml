@@ -22,7 +22,11 @@ quality = "95"
 
 ############################# Outputs ##############################
 [outputs]
-home = ["HTML", "RSS", "JSON"]
+home = [
+  "HTML",
+  "RSS",
+  "JSON"
+]
 
 [markup.goldmark.renderer]
 unsafe= true
@@ -53,7 +57,7 @@ link = "plugins/search/search.js"
 
 # site variables
 [params.variables]
-font_primary = "Mulish"
+font_primary = "Roboto"
 h1 = "64px"
 h1_lg = "52px"
 h1_md = "42px"
@@ -73,25 +77,25 @@ color_primary = "#01AD9F"
 
 #################### default parameters ################################
 [params]
-logo = "images/logo.svg"
-# logo_width = "130px"
+logo = "images/logo.png"
+logo_width = "140px"
 favicon = "images/favicon.png"
 # Meta data
-description = "My personal website"
+description = "My personal blog"
 author = "Fernando Ayats"
 # contact form action
 contact_form_action = "#" # contact form works with https://formspree.io
 # search
-search = true
+search = false
 # main section
 mainSections = ["blog"]
 # copyright
-copyright = "The content for this site is [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/2.0/). Bookworm theme © Designed by [Themefisher](https://themefisher.com/) and Developed by [Gethugothemes](https://gethugothemes.com/)"
+# copyright = "The content for this site is [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/2.0/). Bookworm theme © Designed by [Themefisher](https://themefisher.com/) and Developed by [Gethugothemes](https://gethugothemes.com/)"
 
 # Preloader
 [params.preloader]
-enable = false
-preloader = "" # use jpg, png, svg or gif format.
+enable = true
+preloader = "jpg" # use jpg, png, svg or gif format.
 
 # Instagram feed
 [params.instafeed]
@@ -195,13 +199,13 @@ weight = 1
 
 [[menu.footer]]
 weight = 5
-name = "Improve"
+name = "Source code"
 url = "https://github.com/viperML/home/tree/bookworm"
 
-# [[menu.footer]]
-# name = "Terms & Conditions"
-# url = "terms-conditions/"
-# weight = 4
+[[menu.footer]]
+name = "Terms & Conditions"
+url = "terms-conditions/"
+weight = 4
 
 # # Social Icons
 [[params.social]]
