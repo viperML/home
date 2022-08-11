@@ -77,8 +77,8 @@ color_primary = "#01AD9F"
 
 #################### default parameters ################################
 [params]
-logo = "images/logo.png"
-logo_width = "140px"
+logo = "images/logo.svg"
+# logo_width = "140px"
 favicon = "images/favicon.png"
 # Meta data
 description = "My personal blog"
