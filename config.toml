@@ -39,7 +39,7 @@ link = "plugins/bootstrap/bootstrap.min.css"
 [[params.plugins.css]]
 link = "plugins/line-awesome/css/line-awesome.min.css"
 [[params.plugins.css]]
-link = "https://fonts.googleapis.com/css2?family=Mulish:wght@500;600;700;800;900&display=swap"
+link = "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@500;600;700;800;900&display=swap"
 
 # JS Plugins
 [[params.plugins.js]]
@@ -57,7 +57,7 @@ link = "plugins/search/search.js"
 
 # site variables
 [params.variables]
-font_primary = "Roboto"
+font_primary = "Source Sans Pro"
 h1 = "64px"
 h1_lg = "52px"
 h1_md = "42px"
