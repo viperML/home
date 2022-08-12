@@ -2,8 +2,14 @@
     font-size: 18px;
 }
 
+// @import 'jetbrains-mono';
+
+// .content code {
+//     font-family: 'JetBrains Mono', 'Courier New', monospace;
+// }
+
 @import 'iosevka-normal';
 
 .content code {
-    font-family: 'iosevka-normal', 'Courier New', monospace;
+    font-family: 'iosevka-normal Web', 'Courier New', monospace;
 }

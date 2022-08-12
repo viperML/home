@@ -5,7 +5,7 @@
 	font-weight: 400;
 	font-stretch: normal;
 	font-style: normal;
-	src: url('ttf/iosevka-normal-regular.ttf') format('truetype'), url('woff2/iosevka-normal-regular.woff2') format('woff2');
+	src: url('/woff2/iosevka-normal-regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -14,7 +14,7 @@
 	font-weight: 400;
 	font-stretch: expanded;
 	font-style: normal;
-	src: url('ttf/iosevka-normal-extended.ttf') format('truetype'), url('woff2/iosevka-normal-extended.woff2') format('woff2');
+	src:  url('/woff2/iosevka-normal-extended.woff2') format('woff2');
 }
 
 @font-face {
@@ -23,7 +23,7 @@
 	font-weight: 400;
 	font-stretch: normal;
 	font-style: oblique;
-	src: url('ttf/iosevka-normal-oblique.ttf') format('truetype'), url('woff2/iosevka-normal-oblique.woff2') format('woff2');
+	src:  url('/woff2/iosevka-normal-oblique.woff2') format('woff2');
 }
 
 @font-face {
@@ -31,7 +31,7 @@
 	font-display: swap;
 	font-weight: 400;
 	font-stretch: normal;
-	src: url('ttf/iosevka-normal-oblique.ttf') format('truetype'), url('woff2/iosevka-normal-oblique.woff2') format('woff2');
+	src: url('/woff2/iosevka-normal-oblique.woff2') format('woff2');
 }
 
 @font-face {
@@ -40,7 +40,7 @@
 	font-weight: 400;
 	font-stretch: expanded;
 	font-style: oblique;
-	src: url('ttf/iosevka-normal-extendedoblique.ttf') format('truetype'), url('woff2/iosevka-normal-extendedoblique.woff2') format('woff2');
+	src: url('/woff2/iosevka-normal-extendedoblique.woff2') format('woff2');
 }
 
 @font-face {
@@ -48,7 +48,7 @@
 	font-display: swap;
 	font-weight: 400;
 	font-stretch: expanded;
-	src: url('ttf/iosevka-normal-extendedoblique.ttf') format('truetype'), url('woff2/iosevka-normal-extendedoblique.woff2') format('woff2');
+	src: url('/woff2/iosevka-normal-extendedoblique.woff2') format('woff2');
 }
 
 @font-face {
@@ -57,7 +57,7 @@
 	font-weight: 400;
 	font-stretch: normal;
 	font-style: italic;
-	src: url('ttf/iosevka-normal-italic.ttf') format('truetype'), url('woff2/iosevka-normal-italic.woff2') format('woff2');
+	src: url('/woff2/iosevka-normal-italic.woff2') format('woff2');
 }
 
 @font-face {
@@ -66,5 +66,5 @@
 	font-weight: 400;
 	font-stretch: expanded;
 	font-style: italic;
-	src: url('ttf/iosevka-normal-extendeditalic.ttf') format('truetype'), url('woff2/iosevka-normal-extendeditalic.woff2') format('woff2');
+	src: url('/woff2/iosevka-normal-extendeditalic.woff2') format('woff2');
 }
