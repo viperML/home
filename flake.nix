@@ -24,13 +24,20 @@
         ...
       }: {
         packages = {
-          bookworm-light = pkgs.fetchFromGitHub rec {
+          _bookworm-light = pkgs.fetchFromGitHub rec {
             repo = "bookworm-light";
-            name = repo;
             owner = "gethugothemes";
             rev = "47981c600c2c6adde3af0742c2ab352d1464f46b";
-            sha256 = "sha256-p4G8vKY/wnWpSJV0JK89R8wyZn/C6ecyrJZGkDkiDX0=";
+            hash = "sha256-p4G8vKY/wnWpSJV0JK89R8wyZn/C6ecyrJZGkDkiDX0=";
           };
+          bookworm-light =
+            pkgs.runCommand "bookworm-light" {
+              src = self'.packages._bookworm-light;
+            } ''
+              cp -ra $src $out
+              chmod +w $out/assets/scss/style.scss
+              printf "\n\n%s\n" "@import 'overrides';" >> $out/assets/scss/style.scss
+            '';
           themes = pkgs.linkFarmFromDrvs "themes" [self'.packages.bookworm-light];
           default = pkgs.stdenvNoCC.mkDerivation {
             pname = "home";
@@ -42,8 +49,10 @@
             ];
             HUGO_THEMESDIR = self'.packages.themes;
             buildPhase = ''
+              runHook preBuild
               mkdir -p $out
               hugo --minify --destination $out
+              runHook postBuild
             '';
             dontInstall = true;
           };
@@ -60,10 +69,6 @@
             pkgs.nomad
           ];
           HUGO_THEMESDIR = self'.packages.themes;
-          shellHook = ''
-            export NOMAD_VAR_rev=$(nix flake metadata . --json | jq -r '.locked.rev')
-            export NOMAD_VAR_narHash=$(nix flake metadata . --json | jq -r '.locked.narHash')
-          '';
         };
       };
     };
