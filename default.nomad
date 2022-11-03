@@ -12,11 +12,11 @@ job "home" {
     }
 
     task "serve" {
-      driver = "containerd-driver"
+      driver = "docker"
 
       config {
-        flake_ref = "github:viperML/home/${var.rev}#serve"
-        flake_sha = var.narHash
+        nix_flake_ref = "github:viperML/home/${var.rev}#serve"
+        nix_flake_sha = var.narHash
         entrypoint = [
           "bin/serve",
         ]
