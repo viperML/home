@@ -9,4 +9,8 @@ themes
 public
 *~
 .obsidian
-.vercel
+
+.vercel/*
+!.vercel/**/
+.vercel/output/*
+!.vercel/output/config.json

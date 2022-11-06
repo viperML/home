@@ -22,6 +22,7 @@
       perSystem = {
         pkgs,
         self',
+        config,
         ...
       }: {
         packages = {
@@ -58,6 +59,27 @@
             '';
             dontInstall = true;
           };
+
+          vercel = pkgs.runCommand "vercel-home" {} ''
+            mkdir -p $out
+            ln -s ${config.packages.default} $out/static
+
+            tee $out/config.json <<EOF
+            {
+              "version": 3,
+              "routes": [
+                {
+                  "handle": "error"
+                },
+                {
+                  "status": 404,
+                  "src": "^(?!/api).*$",
+                  "dest": "/404.html"
+                }
+              ]
+            }
+            EOF
+          '';
 
           serve = pkgs.writeShellScriptBin "serve" ''
             ${pkgs.ran}/bin/ran -r ${self'.packages.default}
