@@ -1,0 +1,38 @@
+name: "build"
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install nix
+      uses: cachix/install-nix-action@master
+      with:
+        install_url: https://nixos.org/nix/install
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+          extra-substituters = https://viperml.cachix.org
+          extra-trusted-public-keys = viperml.cachix.org-1:qZhKBMTfmcLL+OG6fj/hzsMEedgKvZVFRRAhq7j8Vh8=
+
+    - uses: actions/checkout@v3
+      name: Checkout
+
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+    - run: nix build -L --out-link .vercel/output
+
+    - name: Deploy Project Artifacts to Vercel
+      run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
