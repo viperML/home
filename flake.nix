@@ -5,12 +5,14 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-filter.url = "github:numtide/nix-filter";
   };
 
   outputs = {
     self,
     nixpkgs,
     flake-parts,
+    nix-filter,
   }:
     flake-parts.lib.mkFlake {inherit self;} {
       systems = [
@@ -21,7 +23,6 @@
 
       perSystem = {
         pkgs,
-        self',
         config,
         ...
       }: {
@@ -40,17 +41,22 @@
               printf "\n\n%s\n" "@import 'overrides';" >> $out/assets/scss/style.scss
             '';
 
-          themes = pkgs.linkFarmFromDrvs "themes" [self'.packages.bookworm-light];
+          themes = pkgs.linkFarmFromDrvs "themes" [config.packages.bookworm-light];
 
           default = pkgs.stdenvNoCC.mkDerivation {
-            pname = "home";
-            version = builtins.substring 0 8 self.lastModifiedDate;
-            src = self;
-            nativeBuildInputs = [
-              pkgs.hugo
-              pkgs.asciidoctor
+            name = "home";
+            src = nix-filter.lib {
+              root = ./.;
+              exclude = [
+                (nix-filter.lib.matchExt "nix")
+                (nix-filter.lib.matchExt "yaml")
+              ];
+            };
+            nativeBuildInputs = with pkgs; [
+              hugo
+              asciidoctor
             ];
-            HUGO_THEMESDIR = self'.packages.themes;
+            HUGO_THEMESDIR = config.packages.themes;
             buildPhase = ''
               runHook preBuild
               mkdir -p $out
@@ -60,42 +66,12 @@
             dontInstall = true;
           };
 
-          vercel = pkgs.runCommand "vercel-home" {} ''
-            mkdir -p $out
-            ln -s ${config.packages.default} $out/static
-
-            tee $out/config.json <<EOF
-            {
-              "version": 3,
-              "routes": [
-                {
-                  "handle": "error"
-                },
-                {
-                  "status": 404,
-                  "src": "^(?!/api).*$",
-                  "dest": "/404.html"
-                }
-              ]
-            }
-            EOF
-          '';
-
           serve = pkgs.writeShellScriptBin "serve" ''
-            ${pkgs.ran}/bin/ran -r ${self'.packages.default}
+            ${pkgs.ran}/bin/ran -r ${config.packages.default}
           '';
         };
 
-        devShells.default = pkgs.mkShellNoCC {
-          name = "home";
-          inputsFrom = [
-            self'.packages.default
-          ];
-          packages = [
-            pkgs.nomad
-          ];
-          HUGO_THEMESDIR = self'.packages.themes;
-        };
+        legacyPackages = pkgs;
       };
     };
 }
