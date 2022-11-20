@@ -18,7 +18,6 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
-        "x86_64-darwin"
       ];
 
       perSystem = {
@@ -47,9 +46,12 @@
             name = "home";
             src = nix-filter.lib {
               root = ./.;
-              exclude = [
-                (nix-filter.lib.matchExt "nix")
-                (nix-filter.lib.matchExt "yaml")
+              include = [
+                (nix-filter.lib.inDirectory "assets")
+                (nix-filter.lib.inDirectory "content")
+                (nix-filter.lib.inDirectory "sources")
+                (nix-filter.lib.inDirectory "static")
+                "config.toml"
               ];
             };
             nativeBuildInputs = with pkgs; [
