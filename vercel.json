@@ -1,0 +1,3 @@
+{
+    "buildCommand": "nix build -o public"
+}

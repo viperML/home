@@ -65,7 +65,7 @@
           '';
         };
 
-        # legacyPackages = pkgs;
+        legacyPackages = pkgs;
       };
     };
 }
