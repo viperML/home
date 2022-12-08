@@ -1,0 +1,3 @@
+[theme]
+fetch.github = "gethugothemes/bookworm-light"
+src.git = "https://github.com/gethugothemes/bookworm-light"

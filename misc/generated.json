@@ -1,0 +1,22 @@
+{
+    "theme": {
+        "cargoLocks": null,
+        "date": "2022-10-22",
+        "extract": null,
+        "name": "theme",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "gethugothemes",
+            "repo": "bookworm-light",
+            "rev": "b6611843a89c3766a1b3e936eaa5b3e068814eaa",
+            "sha256": "sha256-O/J0/3ltMw9hbTHTyLZhR8N3oLViNPex5PlJ+HP+3zg=",
+            "type": "github"
+        },
+        "version": "b6611843a89c3766a1b3e936eaa5b3e068814eaa"
+    }
+}

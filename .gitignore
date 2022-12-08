@@ -10,7 +10,4 @@ public
 *~
 .obsidian
 
-.vercel/*
-!.vercel/**/
-.vercel/output/*
-!.vercel/output/config.json
+.vercel
